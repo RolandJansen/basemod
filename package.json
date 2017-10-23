@@ -10,12 +10,13 @@
   "main": "src/electron-starter.js",
   "homepage": "./",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "nf start -p 3000",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "electron": "electron .",
-    "dev" : "nf start"
+    "electron-start": "node src/electron-wait-react",
+    "react-start": "react-scripts start"
   },
   "devDependencies": {
     "electron": "^1.7.9",
