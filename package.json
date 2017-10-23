@@ -8,14 +8,17 @@
     "react-scripts": "1.0.14"
   },
   "main": "src/electron-starter.js",
+  "homepage": "./",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "electron": "electron ."
+    "electron": "electron .",
+    "dev" : "nf start"
   },
   "devDependencies": {
-    "electron": "^1.7.9"
+    "electron": "^1.7.9",
+    "foreman": "^2.0.0"
   }
 }
