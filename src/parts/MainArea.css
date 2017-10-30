@@ -1,0 +1,22 @@
+.main-container {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  background-color: #151515;
+  /* center vertical/horizontal */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-area {
+  width: 15em;
+  transform: translate(0%, -25%);
+}
+
+/*.Main-container > div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%, -50%);
+}*/
