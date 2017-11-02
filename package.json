@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.0.0-beta",
+    "flow-bin": "^0.57.3",
     "open-iconic": "^1.1.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
@@ -20,7 +21,8 @@
     "eject": "react-scripts eject",
     "electron": "electron .",
     "electron-start": "node src/electron-wait-react",
-    "react-start": "react-scripts start"
+    "react-start": "react-scripts start",
+    "flow": "flow"
   },
   "devDependencies": {
     "electron": "^1.7.9",
