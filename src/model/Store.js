@@ -1,23 +1,8 @@
 /* @flow */
 import { createStore } from 'redux';
+import { initialState } from './initialState'
+import reducer from './reducers'
 
-type StateStore = {
-  games: number,
-  enbPresets: null
-}
+let store: Object = createStore(reducer, initialState)
 
-/**
- *
- */
-class Store {
-  constructor() {
-
-  }
-
-
-
-  initialState: StateStore = {
-    games: '',
-    enbPresets: ''
-  }
-}
+export default store

@@ -1,5 +1,8 @@
 /* @flow */
-import { ADD_NMM_VERSION } from './actionTypes';
+import {
+  CHANGE_NMM_VERSION,
+  ADD_ENB_PRESET
+} from './actionTypes';
 
 /**
  * This file exports functions that creates actions.
@@ -18,8 +21,8 @@ import { ADD_NMM_VERSION } from './actionTypes';
  // meta: don't know, any meta information that might be necessary to explain the action.
  //       I don't think that this will ever be used.
  // these are the only valid fields for an action and non others are allowed.
- type Action = {
-   actionType: string,
+ export type Action = {
+   type: string,
    payload?: any,
    error?: boolean,
    meta?: string
@@ -28,20 +31,27 @@ import { ADD_NMM_VERSION } from './actionTypes';
 /**
  * Tests if the version is valid and returns an action object
  * @param {string} version The current NMM version in the format [0-9].[0-9]*.[0-9]*
- * @return {Action} An action of type ADD_NMM_VERSION
+ * @return {Action} An action of type CHANGE_NMM_VERSION
  */
- export function addNmmVersion(version: string): Action {
-   let vPattern = new RegExp('^\d+(\.\d+){0,2}$'); // eslint-disable-line
-   if (vPattern.test(version)) {
-     return {
-       actionType: ADD_NMM_VERSION,
-       payload: version
-     };
-   }
+export function changeNmmVersion(version: string): Action {
+ const vPattern = new RegExp('^(?:(\\d+)\\.)?(?:(\\d+)\\.)?(\\*|\\d+)$') // eslint-disable-line
+ if (vPattern.test(version)) {
    return {
-     actionType: ADD_NMM_VERSION,
-     payload: version,
-     error: true,
-     meta: 'Wrong version format'
+     type: CHANGE_NMM_VERSION,
+     payload: version
    };
  }
+ return {
+   type: CHANGE_NMM_VERSION,
+   payload: version,
+   error: true,
+   meta: 'Wrong version format'
+ };
+}
+
+export function addEnbPreset(preset: Object): Action {
+  return {
+    type: ADD_ENB_PRESET,
+    payload: preset
+  }
+}

@@ -15,7 +15,7 @@ class TopNav extends Component {
   render() {
     return (
       <Navbar color="dark" dark expand="md">
-        <NavbarBrand href="/">basemod</NavbarBrand>
+        <NavbarBrand href="/"><span className="oi oi-vertical-align-bottom"></span> basemod</NavbarBrand>
         <Nav navbar>
           <NavItem>
             <GameChooser />
