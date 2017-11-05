@@ -1,5 +1,5 @@
 # basemod
-A tool that wraps low level game modifications like script extenders and ENB into FOMod packages that can be installed with Nexus Mod Manager.
+A tool that manages ENB presets for Fallout games.
 
 ## Versioning
 Basemod is maintained under [the Semantic Versioning Guidelines](http://semver.org/).
