@@ -1,9 +1,11 @@
 /* @flow */
+import type { Preset } from './presets/enbPresetTypes'
+import midhrasticEnb from './presets/midhrasticEnb'
+import enhancedShaders from './presets/enhancedShaders'
 
 /**
  * All data and objects that form the initial state of the app go here.
  */
-
 type Game = {
   name: string,
   id: number,
@@ -12,11 +14,11 @@ type Game = {
 
 export type State = {
   nmmVersion: string,
-  games: Array<Object>,
-  enbPresets: Array<Object>
+  games: Array<Game>,
+  enbPresets: Array<Preset>
 }
 
-var games: Array<Game> = [
+let games: Array<Game> = [
   {
     name: 'Fallout3',
     id: 120,
@@ -48,8 +50,13 @@ var games: Array<Game> = [
   }
 ]
 
+let enbPresets: Array<Preset> = [
+  midhrasticEnb,
+  enhancedShaders
+]
+
 export var initialState: State = {
   nmmVersion: '0.63.14',
   games: games,
-  enbPresets: []
+  enbPresets: enbPresets
 }
