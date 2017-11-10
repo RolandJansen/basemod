@@ -17,7 +17,7 @@ class IniParser {
   constructor(gameName: string, iniFileName: string) {
     this.iniPath = this.setupMyGamesPath(gameName, iniFileName)
     this.iniData = this.loadIniFile(this.iniPath)
-    this.iniDataBkup = Object.assign({}, this.iniData)  // make a copy by value
+    this.iniDataBkup = JSON.parse(JSON.stringify(this.iniData))  // make a (deep) copy by value
   }
 
   /**
@@ -149,9 +149,9 @@ class IniParser {
    * @return {Object}   The ini object that gets overwritten
    */
   restoreOrgValues(): Object {
-    let oldIniState = Object.assign({}, this.iniData)
-    this.iniData = Object.assign({}, this.iniDataBkup)
-    return oldIniState
+    const rejectedIniState = JSON.parse(JSON.stringify(this.iniData))
+    this.iniData = JSON.parse(JSON.stringify(this.iniDataBkup))
+    return rejectedIniState
   }
 }
 
