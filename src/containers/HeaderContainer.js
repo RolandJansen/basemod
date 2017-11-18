@@ -1,6 +1,6 @@
 /* @flow */
 import { connect } from 'react-redux'
-import { activateGame } from '../model/actionCreators'
+import { selectGame } from '../model/actionCreators'
 import TopNav from '../components/TopNav'
 
 const getGameList = rootState => {
@@ -24,8 +24,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onGameChange: gameName => {
-      dispatch(activateGame(gameName))
+    onGameSelect: gameName => {
+      dispatch(selectGame(gameName))
     }
   }
 }

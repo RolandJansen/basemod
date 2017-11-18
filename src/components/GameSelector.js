@@ -25,7 +25,7 @@ class GameChooser extends Component {
 
   select(e) {
     this.setState({ selected: e.target.innerText })
-    this.props.onGameChange(e.target.innerText)
+    this.props.onGameSelect(e.target.innerText)
   }
 
   render() {

@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Navbar, NavbarBrand, Nav, NavItem } from 'reactstrap';
-import GameChooser from './GameChooser';
+import GameSelector from './GameSelector';
 
 /**
  *
  */
-const TopNav = ({ games, onGameChange }) => (
+const TopNav = ({ games, onGameSelect }) => (
   <Navbar color="dark" dark expand="md">
     <NavbarBrand href="/"><span className="oi oi-vertical-align-bottom"></span> basemod</NavbarBrand>
     <Nav navbar>
       <NavItem>
-        <GameChooser games={ games } onGameChange={ onGameChange }/>
+        <GameSelector games={ games } onGameSelect={ onGameSelect }/>
       </NavItem>
     </Nav>
   </Navbar>

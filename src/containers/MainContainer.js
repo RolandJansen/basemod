@@ -5,8 +5,8 @@ import EnbChooser from '../components/EnbChooser'
 
 const getENBsForCurrentGame = state => {
   let enbs = []
-  if (state.activeGame) {
-    const enbSubTree = state[state.activeGame]['enbPresets']
+  if (state.selectedGame) {
+    const enbSubTree = state[state.selectedGame]['enbPresets']
     enbSubTree.forEach((enb) => {
       enbs.push({
         id: enb.id,

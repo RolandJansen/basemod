@@ -6,7 +6,7 @@ import type { Preset } from './presets/enbPresetTypes'
 import { initialState } from './initialState'
 import {
   CHANGE_NMM_VERSION,
-  ACTIVATE_GAME,
+  SELECT_GAME,
   ACTIVATE_ENB_PRESET,
   DISABLE_ENB_PRESETS
 } from './actionTypes'
@@ -41,9 +41,9 @@ function nmmVersion(state: string = '0.63.14', action: Action) {
  * @param  {string} action Action object
  * @return {string}        next state of the activeGame field
  */
-function activeGame(state: string = '', action: Action) {
+function selectedGame(state: string = '', action: Action) {
   switch (action.type) {
-    case ACTIVATE_GAME:
+    case SELECT_GAME:
       // initialState should probably be replaced with the actual state
       // just to avoid inconsistencies
       if (initialState.hasOwnProperty(action.payload)) {
@@ -152,7 +152,7 @@ function EnbPresets(state: Array<Preset> = [], action: Action) {
 
 const reducer: Function = combineReducers({
   nmmVersion,
-  activeGame,
+  selectedGame,
   Fallout3,
   FalloutNV
 })

@@ -1,7 +1,7 @@
 /* @flow */
 import {
   CHANGE_NMM_VERSION,
-  ACTIVATE_GAME,
+  SELECT_GAME,
   ACTIVATE_ENB_PRESET,
   DISABLE_ENB_PRESETS,
   INSTALL_ENB_PRESET
@@ -52,10 +52,10 @@ export function changeNmmVersion(version: string): Action {
  };
 }
 
-export function activateGame(key: string): Action {
+export function selectGame(storeKey: string): Action {
   return {
-    type: ACTIVATE_GAME,
-    payload: key
+    type: SELECT_GAME,
+    payload: storeKey
   }
 }
 

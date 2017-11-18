@@ -14,7 +14,7 @@ export type Game = {
 
 export type State = {
   nmmVersion: string,
-  activeGame: string,
+  selectedGame: string,
   Fallout3: Game,
   FalloutNV: Game,
   // Fallout4: Game,
@@ -68,7 +68,7 @@ let Oblivion: Game = {
 
 export const initialState: State = {
   nmmVersion: '0.63.14',
-  activeGame: '',
+  selectedGame: '',
   Fallout3: Fallout3,
   FalloutNV: FalloutNV,
   // Fallout4: Fallout4,

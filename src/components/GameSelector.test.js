@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import GameChooser from './GameChooser';
+import GameSelector from './GameSelector';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<GameChooser />, div);
+  ReactDOM.render(<GameSelector />, div);
 });
