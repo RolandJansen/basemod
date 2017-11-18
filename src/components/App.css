@@ -1,3 +1,10 @@
+html, body, #root, .App
+{
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
 .main-container {
   height: calc(100% - 56px);
   width: 100%;
@@ -12,10 +19,3 @@
 .main-area {
   width: 15em;
 }
-
-/*.Main-container > div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateY(-50%, -50%);
-}*/

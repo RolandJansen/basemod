@@ -6,57 +6,74 @@ import enhancedShaders from './presets/enhancedShaders'
 /**
  * All data and objects that form the initial state of the app go here.
  */
-type Game = {
+export type Game = {
   name: string,
   id: number,
-  active: boolean
+  enbPresets: Array<Preset>
 }
 
 export type State = {
   nmmVersion: string,
-  games: Array<Game>,
-  enbPresets: Array<Preset>
+  activeGame: string,
+  Fallout3: Game,
+  FalloutNV: Game,
+  // Fallout4: Game,
+  // Skyrim: Game,
+  // SkyrimSE: Game,
+  // Morrowind: Game,
+  // Oblivion: Game
 }
 
-let games: Array<Game> = [
-  {
-    name: 'Fallout3',
-    id: 120,
-    active: true
-  }, {
-    name: 'FalloutNV',
-    id: 130,
-    active: false
-  }, {
-    name: 'Fallout4',
-    id: 1151,
-    active: false
-  }, {
-    name: 'Morrowind',
-    id: 100,
-    active: false
-  }, {
-    name: 'Oblivion',
-    id: 101,
-    active: false
-  }, {
-    name: 'Skyrim',
-    id: 110,
-    active: false
-  }, {
-    name: 'SkyrimSE',
-    id: 1704,
-    active: false
-  }
-]
+let Fallout3: Game = {
+  name: 'Fallout3',
+  id: 120,
+  enbPresets: [ midhrasticEnb ]
+}
 
-let enbPresets: Array<Preset> = [
-  midhrasticEnb,
-  enhancedShaders
-]
+let FalloutNV: Game = {
+  name: 'FalloutNV',
+  id: 130,
+  enbPresets: [ enhancedShaders ]
+}
 
-export var initialState: State = {
+let Fallout4: Game = {
+  name: 'Fallout4',
+  id: 1151,
+  enbPresets: []
+}
+
+let Skyrim: Game = {
+  name: 'Skyrim',
+  id: 110,
+  enbPresets: []
+}
+
+let SkyrimSE: Game = {
+  name: 'SkyrimSE',
+  id: 1704,
+  enbPresets: []
+}
+
+let Morrowind: Game = {
+  name: 'Morrowind',
+  id: 100,
+  enbPresets: []
+}
+
+let Oblivion: Game = {
+  name: 'Oblivion',
+  id: 101,
+  enbPresets: []
+}
+
+export const initialState: State = {
   nmmVersion: '0.63.14',
-  games: games,
-  enbPresets: enbPresets
+  activeGame: '',
+  Fallout3: Fallout3,
+  FalloutNV: FalloutNV,
+  // Fallout4: Fallout4,
+  // Skyrim: Skyrim,
+  // SkyrimSE: SkyrimSE,
+  // Morrowind: Morrowind,
+  // Oblivion: Oblivion
 }

@@ -1,7 +1,10 @@
 /* @flow */
 import {
   CHANGE_NMM_VERSION,
-  ADD_ENB_PRESET
+  ACTIVATE_GAME,
+  ACTIVATE_ENB_PRESET,
+  DISABLE_ENB_PRESETS,
+  INSTALL_ENB_PRESET
 } from './actionTypes';
 
 /**
@@ -49,9 +52,30 @@ export function changeNmmVersion(version: string): Action {
  };
 }
 
-export function addEnbPreset(preset: Object): Action {
+export function activateGame(key: string): Action {
   return {
-    type: ADD_ENB_PRESET,
-    payload: preset
+    type: ACTIVATE_GAME,
+    payload: key
+  }
+}
+
+export function activateEnbPreset(presetId: number): Action {
+  return {
+    type: ACTIVATE_ENB_PRESET,
+    payload: presetId
+  }
+}
+
+export function disableEnbPresets(presetId: number): Action {
+  return {
+    type: DISABLE_ENB_PRESETS,
+    payload: presetId
+  }
+}
+
+export function installEnbPreset(presetId: number): Action {
+  return {
+    type: INSTALL_ENB_PRESET,
+    payload: presetId
   }
 }
