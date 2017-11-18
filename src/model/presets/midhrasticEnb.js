@@ -8,11 +8,14 @@ import type { Preset } from './enbPresetTypes'
  * the ini files.
  */
 let midhrasticEnb: Preset = {
+    isSelected: false,
+    isInstalled: false,
+    isRequesting: false,
+    lastUpdate: 0,
     name: 'Midhrastic ENB',
     id: 18107,
     gameId: 120,
     gameName: 'Fallout3',
-    active: false,
     ini: [
       {
         section: 'Display',

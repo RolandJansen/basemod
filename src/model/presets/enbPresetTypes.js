@@ -2,6 +2,8 @@
 /**
  * Flow-type typedefs for  for enb presets.
  */
+type timestamp = number
+
  export type IniObject = {
    section: string,
    key: string | Array<any>,
@@ -11,13 +13,18 @@
  }
 
  export type Preset = {
+   // async props
+   isSelected: boolean,
+   isInstalled: boolean,
+   isRequesting: boolean,
+   lastUpdate: timestamp,
+   // static props
    name: string,
    id: number,
    gameId: number,
    gameName: string,
    enbMinVersion: string,
    enbMaxVersion?: string,
-   active: boolean,
    ini?: Array<IniObject>,
    prefs?: Array<IniObject>
  }

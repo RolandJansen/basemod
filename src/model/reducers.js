@@ -7,7 +7,7 @@ import { initialState } from './initialState'
 import {
   CHANGE_NMM_VERSION,
   SELECT_GAME,
-  ACTIVATE_ENB_PRESET,
+  SELECT_ENB_PRESET,
   DISABLE_ENB_PRESETS
 } from './actionTypes'
 
@@ -83,13 +83,14 @@ function FalloutNV(state: Game= gameDummy, action: Action) {
  * @return  {Game}          The new game state
  */
 function genericGame(state: Game = gameDummy, action: Action) {
+  let enbs = []
   switch (action.type) {
-    case ACTIVATE_ENB_PRESET:
-      state.enbPresets = EnbPresets(state.enbPresets, action)
-      return state
+    case SELECT_ENB_PRESET:
+      enbs = EnbPresets(state.enbPresets, action)
+      return Object.assign({}, state, { enbPresets: enbs })
     case DISABLE_ENB_PRESETS:
-      state.enbPresets = EnbPresets(state.enbPresets, action)
-      return state
+      enbs = EnbPresets(state.enbPresets, action)
+      return Object.assign({}, state, { enbPresets: enbs })
     default:
       return state
   }
@@ -97,20 +98,21 @@ function genericGame(state: Game = gameDummy, action: Action) {
 
 // subtree functions
 function EnbPresets(state: Array<Preset> = [], action: Action) {
+  const idNum = Number.parseInt(action.payload, 10)
   switch (action.type) {
-    case ACTIVATE_ENB_PRESET:
+    case SELECT_ENB_PRESET:
       return state.map(preset => {
-        let newPreset = JSON.parse(JSON.stringify(preset))
-        if (newPreset.id === action.payload) {
-          newPreset.active = true
+        if (preset.id === idNum) {
+          let newPreset = JSON.parse(JSON.stringify(preset))
+          newPreset.isSelected = true
+          return newPreset
         }
-        newPreset.active = false
         return preset
       })
     case DISABLE_ENB_PRESETS:
       return state.map(preset => {
         let newPreset = JSON.parse(JSON.stringify(preset))
-        newPreset.active = false
+        newPreset.isSelected = false
         return newPreset
       })
     default:

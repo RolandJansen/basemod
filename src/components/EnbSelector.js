@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import './EnbChooser.css';
+import './EnbSelector.css';
 
 /**
  *
@@ -11,7 +11,6 @@ class EnbChooser extends Component {
     super(props)
 
     this.state = {
-      selectedEnb: 0,
       buttonDisabled: true
     }
 
@@ -24,20 +23,31 @@ class EnbChooser extends Component {
       selectedEnb: event.target.value,
       buttonDisabled: false
     })
-    this.props.onEnbChange(event.target.value)
+    this.props.onEnbSelect(event.target.value)
   }
 
   handleEnbInstall() {
     this.props.onEnbInstall(this.state.selectedEnb)
   }
 
+  getSelectedEnb(enbs) {
+    let selected = 0
+    enbs.forEach(enb => {
+      if (enb.isSelected) {
+        selected = enb.id
+      }
+    })
+    return selected
+  }
+
   render() {
+    const selected = this.getSelectedEnb(this.props.enbs)
     let noEnbSelected
     if (this.props.enbs.length === 0) {
-      noEnbSelected = <option key="0">Choose a game first</option>
+      noEnbSelected = <option key="0" value="0">Choose a game first</option>
     }
-    if (this.props.enbs.length !== 0 && this.state.selectedEnb === 0) {
-      noEnbSelected = <option key="0">No preset selected</option>
+    if (this.props.enbs.length !== 0 && selected === 0) {
+      noEnbSelected = <option key="0" value="0" >No preset selected</option>
     }
 
     return (

@@ -2,7 +2,7 @@
 import {
   CHANGE_NMM_VERSION,
   SELECT_GAME,
-  ACTIVATE_ENB_PRESET,
+  SELECT_ENB_PRESET,
   DISABLE_ENB_PRESETS,
   INSTALL_ENB_PRESET
 } from './actionTypes';
@@ -59,9 +59,9 @@ export function selectGame(storeKey: string): Action {
   }
 }
 
-export function activateEnbPreset(presetId: number): Action {
+export function selectEnbPreset(presetId: number): Action {
   return {
-    type: ACTIVATE_ENB_PRESET,
+    type: SELECT_ENB_PRESET,
     payload: presetId
   }
 }
@@ -73,6 +73,7 @@ export function disableEnbPresets(presetId: number): Action {
   }
 }
 
+// entry point for an async action chain
 export function installEnbPreset(presetId: number): Action {
   return {
     type: INSTALL_ENB_PRESET,

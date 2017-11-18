@@ -1,33 +1,26 @@
 /* @flow */
 import { connect } from 'react-redux'
-import { activateEnbPreset } from '../model/actionCreators'
-import EnbChooser from '../components/EnbChooser'
+import { selectEnbPreset } from '../model/actionCreators'
+import EnbSelector from '../components/EnbSelector'
 
-const getENBsForCurrentGame = state => {
+const getENBsForSelectedGame = state => {
   let enbs = []
   if (state.selectedGame) {
-    const enbSubTree = state[state.selectedGame]['enbPresets']
-    enbSubTree.forEach((enb) => {
-      enbs.push({
-        id: enb.id,
-        name: enb.name
-      })
-    })
+    enbs = state[state.selectedGame]['enbPresets']
   }
   return enbs
 }
 
 const mapStateToProps = state => {
   return {
-    enbs: getENBsForCurrentGame(state)
+    enbs: getENBsForSelectedGame(state)
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onEnbChange: enbID => {
-      console.log('ID is: ' + enbID)
-      dispatch(activateEnbPreset(enbID))
+    onEnbSelect: enbID => {
+      dispatch(selectEnbPreset(enbID))
     },
     onEnbInstall: enbID => {
       console.log('Install id: ' + enbID)
@@ -38,6 +31,6 @@ const mapDispatchToProps = dispatch => {
 const MainContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(EnbChooser)
+)(EnbSelector)
 
 export default MainContainer

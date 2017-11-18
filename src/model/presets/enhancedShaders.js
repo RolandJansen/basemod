@@ -8,12 +8,15 @@ import type { Preset } from './enbPresetTypes'
  * the ini files.
  */
 let enhancedShaders: Preset = {
+    isSelected: false,
+    isInstalled: false,
+    isRequesting: false,
+    lastUpdate: 0,
     name: 'Enhanced Shaders - ENB',
     id: 49882,
     gameId: 130,
     gameName: 'FalloutNV',
     enbMinVersion: '0.278',
-    active: false,
     ini: [
       {
         key: 'iMultiSample',
