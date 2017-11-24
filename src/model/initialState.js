@@ -9,11 +9,20 @@ import enhancedShaders from './presets/enhancedShaders'
 export type Game = {
   name: string,
   id: number,
+  enbVersion: number,
+  enbUrl: string,
+  enbFile: string,
+  isRequesting: boolean,
+  lastUpdated: number,
   enbPresets: Array<Preset>
 }
 
 export type State = {
   nmmVersion: string,
+  appFolder: string,        // the root folder for config, downloads, stuff
+  downloadFolder: string,   // the folder underneath appFolder for downloads
+  firefoxVersion: string,   // used to build the user-agent header for downloads
+  isFFVRequesting: boolean,
   selectedGame: string,
   Fallout3: Game,
   FalloutNV: Game,
@@ -27,12 +36,22 @@ export type State = {
 let Fallout3: Game = {
   name: 'Fallout3',
   id: 120,
+  enbVersion: 322,
+  enbUrl: 'http://enbdev.com/enbseries_falloutnv_v0322.zip',
+  enbFile: 'enbseries_falloutnv_v0322.zip',
+  isRequesting: false,
+  lastUpdated: 0,
   enbPresets: [ midhrasticEnb ]
 }
 
 let FalloutNV: Game = {
   name: 'FalloutNV',
   id: 130,
+  enbVersion: 322,
+  enbUrl: 'http://enbdev.com/enbseries_falloutnv_v0322.zip',
+  enbFile: 'enbseries_falloutnv_v0322.zip',
+  isRequesting: false,
+  lastUpdated: 0,
   enbPresets: [ enhancedShaders ]
 }
 
@@ -68,6 +87,10 @@ let FalloutNV: Game = {
 
 export const initialState: State = {
   nmmVersion: '0.63.14',
+  appFolder: '',
+  downloadFolder: '',
+  firefoxVersion: '57.0',
+  isFFVRequesting: false,
   selectedGame: '',
   Fallout3: Fallout3,
   FalloutNV: FalloutNV,

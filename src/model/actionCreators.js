@@ -1,11 +1,16 @@
 /* @flow */
 import {
   CHANGE_NMM_VERSION,
+  CHANGE_APP_FOLDER,
+  CHANGE_DOWNLOAD_FOLDER,
+  CHANGE_FIREFOX_VERSION,
+  IS_FFV_REQUESTING,
   SELECT_GAME,
   SELECT_ENB_PRESET,
   DISABLE_ENB_PRESETS,
   INSTALL_ENB_PRESET
 } from './actionTypes';
+import isValidPath from 'is-valid-path'
 
 /**
  * This file exports functions that creates actions.
@@ -28,7 +33,8 @@ import {
    type: string,
    payload?: any,
    error?: boolean,
-   meta?: string
+   meta?: string,
+   timestamp?: number
  }
 
 /**
@@ -50,6 +56,59 @@ export function changeNmmVersion(version: string): Action {
    error: true,
    meta: 'Wrong version format'
  };
+}
+
+export function changeAppFolder(folder: string): Action {
+  if (isValidPath(folder)) {
+    return {
+      type: CHANGE_APP_FOLDER,
+      payload: folder
+    }
+  }
+  return {
+    type: CHANGE_APP_FOLDER,
+    payload: folder,
+    error: true,
+    meta: 'Not a valid filesystem path'
+  }
+}
+
+export function changeDownloadFolder(folder: string): Action {
+  if (isValidPath(folder)) {
+    return {
+      type: CHANGE_DOWNLOAD_FOLDER,
+      payload: folder
+    }
+  }
+  return {
+    type: CHANGE_DOWNLOAD_FOLDER,
+    payload: folder,
+    error: true,
+    meta: 'Not a valid filesystem path'
+  }
+}
+
+export function changeFirefoxVersion(version: string): Action {
+  const vPattern = new RegExp('^(?:(\\d+)\\.)?(?:(\\d+)\\.)?(\\*|\\d+)$') // eslint-disable-line
+  if (vPattern.test(version)) {
+    return {
+      type: CHANGE_FIREFOX_VERSION,
+      payload: version
+    };
+  }
+  return {
+    type: CHANGE_FIREFOX_VERSION,
+    payload: version,
+    error: true,
+    meta: 'Wrong version format'
+  };
+}
+
+export function changeFFVRequestStatus(status: boolean): Action {
+  return {
+    type: IS_FFV_REQUESTING,
+    payload: status
+  }
 }
 
 export function selectGame(storeKey: string): Action {

@@ -1,7 +1,9 @@
 /* @flow */
 import { connect } from 'react-redux'
 import { selectEnbPreset } from '../model/actionCreators'
+import { installEnbPreset } from '../model/actionCreatorsAsync'
 import EnbSelector from '../components/EnbSelector'
+
 
 const getENBsForSelectedGame = state => {
   let enbs = []
@@ -23,7 +25,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(selectEnbPreset(enbID))
     },
     onEnbInstall: enbID => {
-      console.log('Install id: ' + enbID)
+      dispatch(installEnbPreset(enbID))
     }
   }
 }

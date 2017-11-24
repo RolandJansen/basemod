@@ -6,14 +6,26 @@ import type { Preset } from './presets/enbPresetTypes'
 import { initialState } from './initialState'
 import {
   CHANGE_NMM_VERSION,
+  CHANGE_APP_FOLDER,
+  CHANGE_DOWNLOAD_FOLDER,
+  CHANGE_FIREFOX_VERSION,
+  IS_FFV_REQUESTING,
   SELECT_GAME,
   SELECT_ENB_PRESET,
-  DISABLE_ENB_PRESETS
+  DISABLE_ENB_PRESETS,
+  REQUEST_ENB_FOR_FO3NV,
+  RECEIVE_ENB_FOR_FO3NV,
+  RECEIVE_ENB_FOR_FO3NV_FAILURE
 } from './actionTypes'
 
 const gameDummy: Game = {
   name: '',
   id: 0,
+  enbVersion: 0,
+  enbUrl: '',
+  enbFile: '',
+  isRequesting: false,
+  lastUpdated: 0,
   enbPresets: []
 }
 
@@ -28,6 +40,42 @@ const gameDummy: Game = {
 function nmmVersion(state: string = '0.63.14', action: Action) {
   switch (action.type) {
     case CHANGE_NMM_VERSION:
+      return action.payload
+    default:
+      return state
+  }
+}
+
+function appFolder(state: string = '', action: Action) {
+  switch (action.type) {
+    case CHANGE_APP_FOLDER:
+      return action.payload;
+    default:
+      return state
+  }
+}
+
+function downloadFolder(state: string = '', action: Action) {
+  switch (action.type) {
+    case CHANGE_DOWNLOAD_FOLDER:
+      return action.payload
+    default:
+      return state
+  }
+}
+
+function firefoxVersion(state: string = '57.0', action: Action) {
+  switch (action.type) {
+    case CHANGE_FIREFOX_VERSION:
+      return action.payload
+    default:
+      return state
+  }
+}
+
+function isFFVRequesting(state: boolean = false, action: Action) {
+  switch (action.type) {
+    case IS_FFV_REQUESTING:
       return action.payload
     default:
       return state
@@ -63,7 +111,20 @@ function selectedGame(state: string = '', action: Action) {
  * @return  {Game}          The new Fallout3 game state
  */
 function Fallout3(state: Game = gameDummy, action: Action) {
-  return genericGame(state, action)
+  switch (action.type) {
+    case REQUEST_ENB_FOR_FO3NV:
+      return Object.assign({}, state, {
+        isRequesting: true,
+        enbFile: action.payload
+      })
+    case RECEIVE_ENB_FOR_FO3NV:
+      return Object.assign({}, state, {
+        isRequesting: false,
+        lastUpdate: action.timestamp
+      })
+    default:
+      return genericGame(state, action)
+  }
 }
 
 /**
@@ -73,7 +134,20 @@ function Fallout3(state: Game = gameDummy, action: Action) {
  * @return  {Game}          The new FalloutNV game state
  */
 function FalloutNV(state: Game= gameDummy, action: Action) {
-  return genericGame(state, action)
+  switch (action.type) {
+    case REQUEST_ENB_FOR_FO3NV:
+      return Object.assign({}, state, {
+        isRequesting: true,
+        enbFile: action.payload
+      })
+    case RECEIVE_ENB_FOR_FO3NV:
+      return Object.assign({}, state, {
+        isRequesting: false,
+        lastUpdate: action.timestamp
+      })
+    default:
+      return genericGame(state, action)
+  }
 }
 
 /**
@@ -91,6 +165,7 @@ function genericGame(state: Game = gameDummy, action: Action) {
     case DISABLE_ENB_PRESETS:
       enbs = EnbPresets(state.enbPresets, action)
       return Object.assign({}, state, { enbPresets: enbs })
+
     default:
       return state
   }
@@ -98,11 +173,10 @@ function genericGame(state: Game = gameDummy, action: Action) {
 
 // subtree functions
 function EnbPresets(state: Array<Preset> = [], action: Action) {
-  const idNum = Number.parseInt(action.payload, 10)
   switch (action.type) {
     case SELECT_ENB_PRESET:
       return state.map(preset => {
-        if (preset.id === idNum) {
+        if (preset.id === action.payload) {
           let newPreset = JSON.parse(JSON.stringify(preset))
           newPreset.isSelected = true
           return newPreset
@@ -115,10 +189,19 @@ function EnbPresets(state: Array<Preset> = [], action: Action) {
         newPreset.isSelected = false
         return newPreset
       })
+    // case REQUEST_ENB_FOR_FO3NV:
+    //   return state.map(preset => {
+    //     if (preset.id = idNum) {
+    //       let newPreset = JSON.parse(JSON.stringify(preset))
+    //       newPreset.isRequesting = true
+    //     }
+    //   })
+
     default:
       return state
   }
 }
+
 
 // function enbPresets(state: Array<Object> = [], action: Action) {
 //   if (typeof action !== 'undefined') {
@@ -154,6 +237,10 @@ function EnbPresets(state: Array<Preset> = [], action: Action) {
 
 const reducer: Function = combineReducers({
   nmmVersion,
+  appFolder,
+  downloadFolder,
+  firefoxVersion,
+  isFFVRequesting,
   selectedGame,
   Fallout3,
   FalloutNV
