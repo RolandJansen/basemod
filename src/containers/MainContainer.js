@@ -25,7 +25,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(selectEnbPreset(enbID))
     },
     onEnbInstall: enbID => {
-      dispatch(installEnbPreset(enbID))
+      dispatch(installEnbPreset(Number.parseInt(enbID, 10)))
     }
   }
 }

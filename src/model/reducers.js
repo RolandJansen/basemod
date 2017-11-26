@@ -13,9 +13,10 @@ import {
   SELECT_GAME,
   SELECT_ENB_PRESET,
   DISABLE_ENB_PRESETS,
-  REQUEST_ENB_FOR_FO3NV,
-  RECEIVE_ENB_FOR_FO3NV,
-  RECEIVE_ENB_FOR_FO3NV_FAILURE
+  REQUEST_ENB_FOR_FO3,
+  RECEIVE_ENB_FOR_FO3,
+  REQUEST_ENB_FOR_FNV,
+  RECEIVE_ENB_FOR_FNV
 } from './actionTypes'
 
 const gameDummy: Game = {
@@ -112,15 +113,14 @@ function selectedGame(state: string = '', action: Action) {
  */
 function Fallout3(state: Game = gameDummy, action: Action) {
   switch (action.type) {
-    case REQUEST_ENB_FOR_FO3NV:
+    case REQUEST_ENB_FOR_FO3:
       return Object.assign({}, state, {
-        isRequesting: true,
-        enbFile: action.payload
+        isRequesting: action.payload
       })
-    case RECEIVE_ENB_FOR_FO3NV:
+    case RECEIVE_ENB_FOR_FO3:
       return Object.assign({}, state, {
-        isRequesting: false,
-        lastUpdate: action.timestamp
+        isRequesting: action.payload,
+        lastUpdated: action.timestamp
       })
     default:
       return genericGame(state, action)
@@ -135,15 +135,14 @@ function Fallout3(state: Game = gameDummy, action: Action) {
  */
 function FalloutNV(state: Game= gameDummy, action: Action) {
   switch (action.type) {
-    case REQUEST_ENB_FOR_FO3NV:
+    case REQUEST_ENB_FOR_FNV:
       return Object.assign({}, state, {
-        isRequesting: true,
-        enbFile: action.payload
+        isRequesting: action.payload
       })
-    case RECEIVE_ENB_FOR_FO3NV:
+    case RECEIVE_ENB_FOR_FNV:
       return Object.assign({}, state, {
-        isRequesting: false,
-        lastUpdate: action.timestamp
+        isRequesting: action.payload,
+        lastUpdated: action.timestamp
       })
     default:
       return genericGame(state, action)

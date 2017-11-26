@@ -14,6 +14,7 @@ let enhancedShaders: Preset = {
     lastUpdate: 0,
     name: 'Enhanced Shaders - ENB',
     id: 49882,
+    fileId: 1000017733,
     gameId: 130,
     gameName: 'FalloutNV',
     enbMinVersion: '0.278',

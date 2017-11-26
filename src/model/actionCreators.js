@@ -8,7 +8,13 @@ import {
   SELECT_GAME,
   SELECT_ENB_PRESET,
   DISABLE_ENB_PRESETS,
-  INSTALL_ENB_PRESET
+  INSTALL_ENB_PRESET,
+  REQUEST_ENB_FOR_FO3,
+  RECEIVE_ENB_FOR_FO3,
+  REQUEST_ENB_FOR_FNV,
+  RECEIVE_ENB_FOR_FNV,
+  REQUEST_MOD_FILE_DOWNLOAD_URL,
+  RECEIVE_MOD_FILE_DOWNLOAD_URL
 } from './actionTypes';
 import isValidPath from 'is-valid-path'
 
@@ -137,5 +143,56 @@ export function installEnbPreset(presetId: number): Action {
   return {
     type: INSTALL_ENB_PRESET,
     payload: presetId
+  }
+}
+
+export function requestEnbFile(game: string, isRequesting: boolean): Action {
+  let actionType: string = ''
+  switch (game) {
+    case 'Fallout3':
+      actionType = REQUEST_ENB_FOR_FO3
+      break;
+    case 'FalloutNV':
+      actionType = REQUEST_ENB_FOR_FNV
+      break
+    default:
+      break;
+  }
+  return {
+    type: actionType,
+    payload: isRequesting
+  }
+}
+
+export function receiveEnbFile(game: string, isRequesting: boolean): Action {
+  let actionType: string = ''
+  switch (game) {
+    case 'Fallout3':
+      actionType = RECEIVE_ENB_FOR_FO3
+      break
+    case 'FalloutNV':
+      actionType = RECEIVE_ENB_FOR_FNV
+      break
+    default:
+      break
+  }
+  return {
+    type: actionType,
+    payload: isRequesting,
+    timestamp: Date.now()
+  }
+}
+
+export function requestModFileDownloadUrl(): Action {
+  return {
+    type: REQUEST_MOD_FILE_DOWNLOAD_URL,
+    payload: ''
+  }
+}
+
+export function receiveModFileDownloadUrl(): Action {
+  return {
+    type: RECEIVE_MOD_FILE_DOWNLOAD_URL,
+    payload: ''
   }
 }

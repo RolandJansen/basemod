@@ -14,6 +14,7 @@ let midhrasticEnb: Preset = {
     lastUpdate: 0,
     name: 'Midhrastic ENB',
     id: 18107,
+    fileId: 85290,
     gameId: 120,
     gameName: 'Fallout3',
     ini: [

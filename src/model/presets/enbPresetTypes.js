@@ -21,6 +21,7 @@ type timestamp = number
    // static props
    name: string,
    id: number,
+   fileId: number,
    gameId: number,
    gameName: string,
    enbMinVersion: string,

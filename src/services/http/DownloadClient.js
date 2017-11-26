@@ -36,7 +36,8 @@ class Downloader {
   }
 
   getUnsuspiciousUserAgent(firefoxVersion: string): string {
-    return 'Firefox/' + firefoxVersion
+    // return 'Firefox/' + firefoxVersion
+    return 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:57.0) Gecko/20100101 Firefox/57.0'
   }
 
   getNMMUserAgent(version: string): string {
@@ -53,38 +54,24 @@ class Downloader {
       console.log(error)
       return
     }
+    console.log(url)
     // the user agent should be assembled so that it matches the os
     const header = {
       method: 'GET',
       url: url.href,
-      headers: { 'User-Agent': this.userAgent },
+      headers: {
+        'User-Agent': this.userAgent,
+        'Referer': 'http://enbdev.com/mod_falloutnv_v0322.htm'
+      },
       encoding: null
     }
 
+    const fpath: string = this.downloadFolder + '\\' + this.getFileName(url)
     console.log('Downloading ' + url.href + ' ...')
-    request(header)
+    return request(header)
       .then(data => {
-        const fpath: string = this.downloadFolder + '\\' + this.getFileName(url)
         fs.writeFileSync(fpath, data)
-        console.log('Done.')
       })
-      .catch(error => {
-        console.log(error)
-      })
-  }
-
-
-
-  getModInfo(modID) {
-
-  }
-
-  getModFileInfo() {
-
-  }
-
-  GetModFileDownloadUrls() {
-
   }
 
   getUrl(urlString: string, queryString: string = ''): URL {
