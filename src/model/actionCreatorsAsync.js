@@ -1,4 +1,5 @@
 /* @flow */
+// import Zip from 'node-7z'
 import type { Action } from './actionCreators'
 import type { Preset } from './presets/enbPresetTypes'
 import {
@@ -11,35 +12,55 @@ import DownloadClient from '../services/http/DownloadClient'
 import NexusClient from '../services/http/NexusClient'
 const electron = window.require('electron')
 const request = electron.remote.require('request-promise-native')
+const Zip = electron.remote.require('node-7z')
 
 type AsyncAction = (...stateApi: any) => void
 type Dispatch = (action: Action | AsyncAction) => void
 type GetState = () => any
 
-export function installEnbPreset(enbID: number) {
+export function installEnbPreset(enbID: number): AsyncAction {
   return (dispatch: Dispatch, getState: GetState) => {
+
+    const state = getState()
+    const fName = state.appFolder + '\\' + state.downloadFolder + '\\enbseries_falloutnv_v0322.zip'
+    const destFolder = state.appFolder + '\\' + state.downloadFolder + '\\enbseries_test'
+    dispatch(extractArchive(fName, destFolder))
 
     // first we have to download the enb software if not already done
     // dispatch(downloadEnbIfNeeded())
     // fetchModInfos
     // dispatch(fetchModFileInfos(enbID))
-    dispatch(fetchModFileDownloadUrl(enbID))
+    // dispatch(fetchModFileDownloadUrl(enbID))
   }
 }
 
-export function downloadEnbIfNeeded() {
+export function extractArchive(fName: string, destFolder: string): AsyncAction {
+  return (dispatch: Dispatch) => {
+    const zipTask = new Zip()
+    zipTask.extractFull(fName, destFolder)
+    .then(() => {
+      console.log('All extracted')
+    })
+    .catch((error) => {
+      console.log('An error occured: ' + error)
+    })
+  }
+}
+
+export function downloadEnbIfNeeded(): AsyncAction {
   return (dispatch: Dispatch, getState: GetState) => {
     const state = getState()
     const game = state.selectedGame
     const dlFolder = state.appFolder + '\\' + state.downloadFolder
 
     let downloader = new DownloadClient(dlFolder)
-    console.log(state[game].lastUpdated)
+    // this is extremely risky, it should check if the file exists already
     if (state[game].lastUpdated === 0) {
       dispatch(requestEnbFile(game, true))
       console.log('Note: enb download is faked by local server')
       // downloader.getRegularFile(state[game]['enbUrl'])
-      downloader.getRegularFile('http://127.0.0.1:8080/enbseries_falloutnv_v0278.zip')
+      downloader.getEnbArchive('http://127.0.0.1:8080/enbseries_falloutnv_v0278.zip')
+      // downloader.getRegularFile('enbseries_falloutnv_v0278.zip')
       .then(() => {
         dispatch(receiveEnbFile(game, false))
         console.log('download done.')
@@ -51,7 +72,18 @@ export function downloadEnbIfNeeded() {
   }
 }
 
-export function fetchModInfos(modID: number) {
+export function downloadModIfNeeded(modID: number, modHref: string): AsyncAction {
+  return (dispatch: Dispatch, getState: GetState) => {
+    const state = getState()
+    const dlFolder = state.appFolder + '\\' + state.downloadFolder
+
+    let downloader = new DownloadClient(dlFolder)
+    const fileName = downloader.getFileName(modHref)
+
+  }
+}
+
+export function fetchModInfos(modID: number): AsyncAction {
   return (dispatch: Dispatch, getState: GetState) => {
     const state = getState()
     const nexus = new NexusClient(state.nmmVersion)
@@ -66,7 +98,7 @@ export function fetchModInfos(modID: number) {
   }
 }
 
-export function fetchModFileInfos(modID: number) {
+export function fetchModFileInfos(modID: number): AsyncAction {
   return (dispatch: Dispatch, getState: GetState) => {
     const state = getState()
     const nexus = new NexusClient(state.nmmVersion)
@@ -81,7 +113,7 @@ export function fetchModFileInfos(modID: number) {
   }
 }
 
-export function fetchModFileDownloadUrl(modID: number) {
+export function fetchModFileDownloadUrl(modID: number): AsyncAction {
   return (dispatch: Dispatch, getState: GetState) => {
     const state = getState()
     const nexus = new NexusClient(state.nmmVersion)
@@ -102,7 +134,7 @@ export function fetchModFileDownloadUrl(modID: number) {
   }
 }
 
-export function fetchFirefoxVersion() {
+export function fetchFirefoxVersion(): AsyncAction {
   return (dispatch: Dispatch) => {
     dispatch(changeFFVRequestStatus(true))
     getFirefoxVersion()

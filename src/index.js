@@ -6,7 +6,7 @@ import { createStore, applyMiddleware } from 'redux'
 import { initialState } from './model/initialState'
 import reducer from './model/reducers'
 import App from './components/App'
-import { downloadFirefoxVersion } from './model/actionCreatorsAsync'
+// import { downloadFirefoxVersion } from './model/actionCreatorsAsync'
 import registerServiceWorker from './registerServiceWorker'
 // import stylesheets
 import 'bootstrap/dist/css/bootstrap.css'
@@ -17,10 +17,9 @@ const electron = window.require('electron')
 const fs = electron.remote.require('fs')
 const os = electron.remote.require('os')
 
-const appFolder: string = os.homedir() + '\\.basemod'
-const downloadFolder: string = 'downloads'
-
 // set the app folder where everything gets stored
+const downloadFolder: string = 'downloads'
+const appFolder: string = os.homedir() + '\\.basemod'
 if (!fs.existsSync(appFolder)) {
   fs.mkdirSync(appFolder)
 }
