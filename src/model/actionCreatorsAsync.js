@@ -5,6 +5,9 @@ import type { Preset } from './presets/enbPresetTypes'
 import {
   requestEnbFile,
   receiveEnbFile,
+  initFileExtract,
+  fileExtractFinished,
+  fileExtractError,
   changeFirefoxVersion,
   changeFFVRequestStatus
 } from './actionCreators'
@@ -34,14 +37,17 @@ export function installEnbPreset(enbID: number): AsyncAction {
   }
 }
 
-export function extractArchive(fName: string, destFolder: string): AsyncAction {
+export function extractArchive(fname: string, destFolder: string): AsyncAction {
   return (dispatch: Dispatch) => {
     const zipTask = new Zip()
-    zipTask.extractFull(fName, destFolder)
+    dispatch(initFileExtract(fname))
+    zipTask.extractFull(fname, destFolder)
     .then(() => {
+      dispatch(fileExtractFinished(fname))
       console.log('All extracted')
     })
     .catch((error) => {
+      dispatch(fileExtractError(error))
       console.log('An error occured: ' + error)
     })
   }

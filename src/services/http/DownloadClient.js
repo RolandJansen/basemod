@@ -44,21 +44,19 @@ class Downloader {
     return 'Nexus Client v' + version
   }
 
-  getRegularFile(downloadUrl: string) {
+  getEnbArchive(downloadUrl: string): Promise<any> {
 
     let url
     try {
       url = new URL(downloadUrl)
     } catch (error) {
-      // not ideal, should be logged or sth
-      console.log(error)
-      return
+      // $FlowFixMe
+      return Promise.reject(error)
     }
-    console.log(url)
+
     // the user agent should be assembled so that it matches the os
     const header = {
-      method: 'GET',
-      url: url.href,
+      uri: url,
       headers: {
         'User-Agent': this.userAgent,
         'Referer': 'http://enbdev.com/mod_falloutnv_v0322.htm'
@@ -66,22 +64,50 @@ class Downloader {
       encoding: null
     }
 
-    const fpath: string = this.downloadFolder + '\\' + this.getFileName(url)
-    console.log('Downloading ' + url.href + ' ...')
+    return this.getFile(header)
+  }
+
+  getModFromNexus(nmmVersion: string, href: string): Promise<any> {
+    const agent = 'Nexus Client v' + nmmVersion
+    let url
+    try {
+      url = new URL(href)
+    } catch (error) {
+      // $FlowFixMe
+      return Promise.reject(error)
+    }
+
+    const header = {
+      uri: url,
+      headers: { 'User-Agent': agent },
+      encoding: null
+    }
+
+    return this.getFile(header)
+  }
+
+  getFile(header: Object): Promise<any> {
+    const fpath: string = this.downloadFolder + '\\' + this.getFileName(header.uri)
+    console.log('Downloading ' + header.uri.href + ' ...')
     return request(header)
-      .then(data => {
-        fs.writeFileSync(fpath, data)
-      })
+    .then(data => {
+      fs.writeFileSync(fpath, data)
+    })
   }
 
-  getUrl(urlString: string, queryString: string = ''): URL {
-    let url = new URL(urlString);
-    url.search = queryString;
-    return url;
-  }
+  // getUrl(urlString: string, queryString: string = ''): URL {
+  //   let url = new URL(urlString);
+  //   url.search = queryString;
+  //   return url;
+  // }
 
-  getFileName(url: URL): string {
-    const path = url.pathname
+  getFileName(url: URL | string): string {
+    let path
+    if (typeof url === 'string') {
+      path = url
+    } else {
+      path = url.pathname
+    }
     const pathParts = path.split('/')
     return pathParts[pathParts.length - 1]
   }

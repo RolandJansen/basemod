@@ -1,3 +1,0 @@
-THIS FILE IS A NOTE AND SHOULD BE DELETED SOON!
-
-Here goes all services that don't belong to the core architecture: apis, file i/o, mod creation, external services of any kind (feedback, email, social media, etc.).

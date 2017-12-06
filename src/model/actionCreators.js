@@ -14,7 +14,10 @@ import {
   REQUEST_ENB_FOR_FNV,
   RECEIVE_ENB_FOR_FNV,
   REQUEST_MOD_FILE_DOWNLOAD_URL,
-  RECEIVE_MOD_FILE_DOWNLOAD_URL
+  RECEIVE_MOD_FILE_DOWNLOAD_URL,
+  INIT_FILE_EXTRACT,
+  FILE_EXTRACT_FINISHED,
+  FILE_EXTRACT_ERROR
 } from './actionTypes';
 import isValidPath from 'is-valid-path'
 
@@ -194,5 +197,26 @@ export function receiveModFileDownloadUrl(): Action {
   return {
     type: RECEIVE_MOD_FILE_DOWNLOAD_URL,
     payload: ''
+  }
+}
+
+export function initFileExtract(fname: string): Action {
+  return {
+    type: INIT_FILE_EXTRACT,
+    payload: fname
+  }
+}
+
+export function fileExtractFinished(fname: string): Action {
+  return {
+    type: FILE_EXTRACT_FINISHED,
+    payload: fname
+  }
+}
+
+export function fileExtractError(error: Error): Action {
+  return {
+    type: FILE_EXTRACT_ERROR,
+    payload: error
   }
 }
