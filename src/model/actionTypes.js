@@ -1,6 +1,6 @@
 /* @flow */
 
-// all action types gathered in one place:
+// system internal action types
 export const CHANGE_NMM_VERSION: string = 'CHANGE_NMM_VERSION'
 export const CHANGE_APP_FOLDER: string = 'CHANGE_APP_FOLDER'
 export const CHANGE_DOWNLOAD_FOLDER: string = 'CHANGE_DOWNLOAD_FOLDER'
@@ -11,13 +11,24 @@ export const SELECT_ENB_PRESET: string = 'SELECT_ENB_PRESET'
 export const DISABLE_ENB_PRESETS: string = 'DISABLE_ENB_PRESETS'
 export const INSTALL_ENB_PRESET: string = 'INSTALL_ENB_PRESET'
 
-// action types for middleware
-export const REQUEST_ENB_FOR_FO3: string = 'REQUEST_ENB_FOR_FO3'
-export const RECEIVE_ENB_FOR_FO3: string = 'RECEIVE_ENB_FOR_FO3'
-export const REQUEST_ENB_FOR_FNV: string = 'REQUEST_ENB_FOR_FNV'
-export const RECEIVE_ENB_FOR_FNV: string = 'RECEIVE_ENB_FOR_FNV'
-export const REQUEST_MOD_FILE_DOWNLOAD_URL: string = 'REQUEST_MOD_FILE_DOWNLOAD_URL'
-export const RECEIVE_MOD_FILE_DOWNLOAD_URL: string = 'RECEIVE_MOD_FILE_DOWNLOAD_URL'
-export const INIT_FILE_EXTRACT: string = 'INIT_FILE_EXTRACT'
-export const FILE_EXTRACT_FINISHED: string = 'FILE_EXTRACT_FINISHED'
+// action types for async dispatching (middleware)
+export const DOWNLOAD_ENB_INIT: string = 'DOWNLOAD_ENB_INIT'
+export const DOWNLOAD_ENB_SUCCESS: string = 'DOWNLOAD_ENB_SUCCESS'
+export const DOWNLOAD_ENB_ERROR: string = 'DOWNLOAD_ENB_ERROR'
+
+export const FETCH_MOD_INFOS_INIT: string = 'FETCH_MOD_INFOS_INIT'
+export const FETCH_MOD_INFOS_SUCCESS: string = 'FETCH_MOD_INFOS_SUCCESS'
+export const FETCH_MOD_INFOS_ERROR: string = 'FETCH_MOD_INFOS_ERROR'
+export const FETCH_MOD_FILE_INFOS_INIT: string = 'FETCH_MOD_FILE_INFOS_INIT'
+export const FETCH_MOD_FILE_INFOS_SUCCESS: string = 'FETCH_MOD_FILE_INFOS_SUCCESS'
+export const FETCH_MOD_FILE_INFOS_ERROR: string = 'FETCH_MOD_FILE_INFOS_ERROR'
+export const FETCH_MOD_FILE_DLURL_INIT: string = 'FETCH_MOD_FILE_DLURL_INIT'
+export const FETCH_MOD_FILE_DLURL_SUCCESS: string = 'FETCH_MOD_FILE_DLURL_SUCCESS'
+export const FETCH_MOD_FILE_DLURL_ERROR: string = 'FETCH_MOD_FILE_DLURL_ERROR'
+export const DOWNLOAD_MOD_FILE_INIT: string = 'DOWNLOAD_MOD_FILE_INIT'
+export const DOWNLOAD_MOD_FILE_SUCCESS: string = 'DOWNLOAD_MOD_FILE_SUCCESS'
+export const DOWNLOAD_MOD_FILE_ERROR: string = 'DOWNLOAD_MOD_FILE_ERROR'
+
+export const FILE_EXTRACT_INIT: string = 'FILE_EXTRACT_INIT'
+export const FILE_EXTRACT_SUCCESS: string = 'FILE_EXTRACT_SUCCESS'
 export const FILE_EXTRACT_ERROR: string = 'FILE_EXTRACT_ERROR'

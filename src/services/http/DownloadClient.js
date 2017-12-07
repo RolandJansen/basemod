@@ -73,7 +73,6 @@ class Downloader {
     try {
       url = new URL(href)
     } catch (error) {
-      // $FlowFixMe
       return Promise.reject(error)
     }
 
@@ -88,11 +87,15 @@ class Downloader {
 
   getFile(header: Object): Promise<any> {
     const fpath: string = this.downloadFolder + '\\' + this.getFileName(header.uri)
-    console.log('Downloading ' + header.uri.href + ' ...')
-    return request(header)
-    .then(data => {
-      fs.writeFileSync(fpath, data)
-    })
+
+    if (!fs.existsSync(fpath)) {
+      console.log('Downloading ' + header.uri.href + ' ...')
+      return request(header)
+      .then(data => {
+        fs.writeFileSync(fpath, data)
+      })
+    }
+    return Promise.resolve(true)
   }
 
   // getUrl(urlString: string, queryString: string = ''): URL {

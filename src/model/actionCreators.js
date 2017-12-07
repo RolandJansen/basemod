@@ -1,25 +1,6 @@
 /* @flow */
-import {
-  CHANGE_NMM_VERSION,
-  CHANGE_APP_FOLDER,
-  CHANGE_DOWNLOAD_FOLDER,
-  CHANGE_FIREFOX_VERSION,
-  IS_FFV_REQUESTING,
-  SELECT_GAME,
-  SELECT_ENB_PRESET,
-  DISABLE_ENB_PRESETS,
-  INSTALL_ENB_PRESET,
-  REQUEST_ENB_FOR_FO3,
-  RECEIVE_ENB_FOR_FO3,
-  REQUEST_ENB_FOR_FNV,
-  RECEIVE_ENB_FOR_FNV,
-  REQUEST_MOD_FILE_DOWNLOAD_URL,
-  RECEIVE_MOD_FILE_DOWNLOAD_URL,
-  INIT_FILE_EXTRACT,
-  FILE_EXTRACT_FINISHED,
-  FILE_EXTRACT_ERROR
-} from './actionTypes';
 import isValidPath from 'is-valid-path'
+import * as at from './actionTypes'
 
 /**
  * This file exports functions that creates actions.
@@ -32,17 +13,14 @@ import isValidPath from 'is-valid-path'
  */
 
  // actions must have an action type. They may have these field:
- // payload: a value, should be an object but can also be a primitive
- // error: boolean to indicate that something went wrong. payload should
- //        be the stacktrace or the error itself
- // meta: don't know, any meta information that might be necessary to explain the action.
- //       I don't think that this will ever be used.
- // these are the only valid fields for an action and non others are allowed.
+ // payload: any value, can even be an object
+ // error: an object of type Error
+ // meta: meta/context information
  export type Action = {
    type: string,
    payload?: any,
-   error?: boolean,
    meta?: string,
+   error?: Error,
    timestamp?: number
  }
 
@@ -51,49 +29,47 @@ import isValidPath from 'is-valid-path'
  * @param {string} version The current NMM version in the format [0-9].[0-9]*.[0-9]*
  * @return {Action} An action of type CHANGE_NMM_VERSION
  */
-export function changeNmmVersion(version: string): Action {
- const vPattern = new RegExp('^(?:(\\d+)\\.)?(?:(\\d+)\\.)?(\\*|\\d+)$') // eslint-disable-line
- if (vPattern.test(version)) {
-   return {
-     type: CHANGE_NMM_VERSION,
-     payload: version
-   };
- }
- return {
-   type: CHANGE_NMM_VERSION,
-   payload: version,
-   error: true,
-   meta: 'Wrong version format'
- };
-}
+// export function changeNmmVersion(version: string): Action {
+//  const vPattern = new RegExp('^(?:(\\d+)\\.)?(?:(\\d+)\\.)?(\\*|\\d+)$') // eslint-disable-line
+//  if (vPattern.test(version)) {
+//    return {
+//      type: CHANGE_NMM_VERSION,
+//      payload: version
+//    };
+//  }
+//  return {
+//    type: CHANGE_NMM_VERSION,
+//    payload: version,
+//    error: true,
+//    meta: 'Wrong version format'
+//  };
+// }
 
 export function changeAppFolder(folder: string): Action {
   if (isValidPath(folder)) {
     return {
-      type: CHANGE_APP_FOLDER,
+      type: at.CHANGE_APP_FOLDER,
       payload: folder
     }
   }
   return {
-    type: CHANGE_APP_FOLDER,
+    type: at.CHANGE_APP_FOLDER,
     payload: folder,
-    error: true,
-    meta: 'Not a valid filesystem path'
+    error: new Error('Not a valid filesystem path')
   }
 }
 
 export function changeDownloadFolder(folder: string): Action {
   if (isValidPath(folder)) {
     return {
-      type: CHANGE_DOWNLOAD_FOLDER,
+      type: at.CHANGE_DOWNLOAD_FOLDER,
       payload: folder
     }
   }
   return {
-    type: CHANGE_DOWNLOAD_FOLDER,
+    type: at.CHANGE_DOWNLOAD_FOLDER,
     payload: folder,
-    error: true,
-    meta: 'Not a valid filesystem path'
+    error: new Error('Not a valid filesystem path')
   }
 }
 
@@ -101,42 +77,41 @@ export function changeFirefoxVersion(version: string): Action {
   const vPattern = new RegExp('^(?:(\\d+)\\.)?(?:(\\d+)\\.)?(\\*|\\d+)$') // eslint-disable-line
   if (vPattern.test(version)) {
     return {
-      type: CHANGE_FIREFOX_VERSION,
+      type: at.CHANGE_FIREFOX_VERSION,
       payload: version
     };
   }
   return {
-    type: CHANGE_FIREFOX_VERSION,
+    type: at.CHANGE_FIREFOX_VERSION,
     payload: version,
-    error: true,
-    meta: 'Wrong version format'
+    error: new Error('Wrong version format')
   };
 }
 
 export function changeFFVRequestStatus(status: boolean): Action {
   return {
-    type: IS_FFV_REQUESTING,
+    type: at.IS_FFV_REQUESTING,
     payload: status
   }
 }
 
 export function selectGame(storeKey: string): Action {
   return {
-    type: SELECT_GAME,
+    type: at.SELECT_GAME,
     payload: storeKey
   }
 }
 
 export function selectEnbPreset(presetId: number): Action {
   return {
-    type: SELECT_ENB_PRESET,
+    type: at.SELECT_ENB_PRESET,
     payload: presetId
   }
 }
 
 export function disableEnbPresets(presetId: number): Action {
   return {
-    type: DISABLE_ENB_PRESETS,
+    type: at.DISABLE_ENB_PRESETS,
     payload: presetId
   }
 }
@@ -144,79 +119,166 @@ export function disableEnbPresets(presetId: number): Action {
 // entry point for an async action chain
 export function installEnbPreset(presetId: number): Action {
   return {
-    type: INSTALL_ENB_PRESET,
+    type: at.INSTALL_ENB_PRESET,
     payload: presetId
   }
 }
 
-export function requestEnbFile(game: string, isRequesting: boolean): Action {
-  let actionType: string = ''
-  switch (game) {
-    case 'Fallout3':
-      actionType = REQUEST_ENB_FOR_FO3
-      break;
-    case 'FalloutNV':
-      actionType = REQUEST_ENB_FOR_FNV
-      break
-    default:
-      break;
-  }
+export function downloadEnbInit(enbVersion: string, game: string): Action {
   return {
-    type: actionType,
-    payload: isRequesting
-  }
-}
-
-export function receiveEnbFile(game: string, isRequesting: boolean): Action {
-  let actionType: string = ''
-  switch (game) {
-    case 'Fallout3':
-      actionType = RECEIVE_ENB_FOR_FO3
-      break
-    case 'FalloutNV':
-      actionType = RECEIVE_ENB_FOR_FNV
-      break
-    default:
-      break
-  }
-  return {
-    type: actionType,
-    payload: isRequesting,
+    type: at.DOWNLOAD_ENB_INIT,
+    payload: enbVersion,
+    meta: game,
     timestamp: Date.now()
   }
 }
 
-export function requestModFileDownloadUrl(): Action {
+export function downloadEnbSuccess(enbVersion: string, game: string): Action {
   return {
-    type: REQUEST_MOD_FILE_DOWNLOAD_URL,
-    payload: ''
+    type: at.DOWNLOAD_ENB_SUCCESS,
+    payload: enbVersion,
+    meta: game,
+    timestamp: Date.now()
   }
 }
 
-export function receiveModFileDownloadUrl(): Action {
+export function downloadEnbError(error: Error, game: string): Action {
   return {
-    type: RECEIVE_MOD_FILE_DOWNLOAD_URL,
-    payload: ''
+    type: at.DOWNLOAD_ENB_ERROR,
+    payload: error,
+    meta: game,
+    timestamp: Date.now()
   }
 }
 
-export function initFileExtract(fname: string): Action {
+export function fetchModInfosInit(modID: number, game: string): Action {
   return {
-    type: INIT_FILE_EXTRACT,
+    type: at.FETCH_MOD_INFOS_INIT,
+    payload: modID,
+    meta: game,
+    timestamp: Date.now()
+  }
+}
+
+export function fetchModInfosSuccess(modID: number, game: string): Action {
+  return {
+    type: at.FETCH_MOD_INFOS_SUCCESS,
+    payload: modID,
+    meta: game,
+    timestamp: Date.now()
+  }
+}
+
+export function fetchModInfosError(modID: number, game: string): Action {
+  return {
+    type: at.FETCH_MOD_INFOS_ERROR,
+    payload: modID,
+    meta: game,
+    timestamp: Date.now()
+  }
+}
+
+export function fetchModFileInfosInit(modID: number, game: string): Action {
+  return {
+    type: at.FETCH_MOD_FILE_INFOS_INIT,
+    payload: modID,
+    meta: game,
+    timestamp: Date.now()
+  }
+}
+
+export function fetchModFileInfosSuccess(modID: number, game: string): Action {
+  return {
+    type: at.FETCH_MOD_FILE_INFOS_SUCCESS,
+    payload: modID,
+    meta: game,
+    timestamp: Date.now()
+  }
+}
+
+export function fetchModFileInfosError(modID: number, game: string, error: Error): Action {
+  return {
+    type: at.FETCH_MOD_FILE_INFOS_ERROR,
+    payload: modID,
+    meta: game,
+    error: error,
+    timestamp: Date.now()
+  }
+}
+
+export function fetchModFileDurlInit(modID: number, game: string): Action {
+  return {
+    type: at.FETCH_MOD_FILE_DLURL_INIT,
+    payload: modID,
+    meta: game,
+    timestamp: Date.now()
+  }
+}
+
+export function fetchModFileDurlSuccess(modID: number, game: string): Action {
+  return {
+    type: at.FETCH_MOD_FILE_DLURL_SUCCESS,
+    payload: modID,
+    meta: game,
+    timestamp: Date.now()
+  }
+}
+
+export function fetchModFileDurlError(modID: number, game: string, error: Error): Action {
+  return {
+    type: at.FETCH_MOD_FILE_DLURL_ERROR,
+    payload: modID,
+    meta: game,
+    error: error,
+    timestamp: Date.now()
+  }
+}
+
+export function downloadModFileInit(modID: number, game: string): Action {
+  return {
+    type: at.DOWNLOAD_MOD_FILE_INIT,
+    payload: modID,
+    meta: game,
+    timestamp: Date.now()
+  }
+}
+
+export function downloadModFileSuccess(modID: number, game: string): Action {
+  return {
+    type: at.DOWNLOAD_MOD_FILE_SUCCESS,
+    payload: modID,
+    meta: game,
+    timestamp: Date.now()
+  }
+}
+
+export function downloadModFileError(modID: number, game: string, error: Error): Action {
+  return {
+    type: at.DOWNLOAD_MOD_FILE_ERROR,
+    payload: modID,
+    meta: game,
+    error: error,
+    timestamp: Date.now()
+  }
+}
+
+export function fileExtractInit(fname: string): Action {
+  return {
+    type: at.FILE_EXTRACT_INIT,
     payload: fname
   }
 }
 
-export function fileExtractFinished(fname: string): Action {
+export function fileExtractSuccess(fname: string): Action {
   return {
-    type: FILE_EXTRACT_FINISHED,
+    type: at.FILE_EXTRACT_SUCCESS,
     payload: fname
   }
 }
 
 export function fileExtractError(error: Error): Action {
   return {
-    type: FILE_EXTRACT_ERROR,
+    type: at.FILE_EXTRACT_ERROR,
     payload: error
   }
 }

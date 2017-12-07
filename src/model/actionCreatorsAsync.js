@@ -60,7 +60,7 @@ export function downloadEnbIfNeeded(): AsyncAction {
     const dlFolder = state.appFolder + '\\' + state.downloadFolder
 
     let downloader = new DownloadClient(dlFolder)
-    // this is extremely risky, it should check if the file exists already
+    // this is extremely risky, it should check if the file exists
     if (state[game].lastUpdated === 0) {
       dispatch(requestEnbFile(game, true))
       console.log('Note: enb download is faked by local server')
