@@ -3,10 +3,12 @@
 import type { Action } from './actionCreators'
 import type { Preset } from './presets/enbPresetTypes'
 import {
-  requestEnbFile,
-  receiveEnbFile,
-  initFileExtract,
-  fileExtractFinished,
+  downloadEnbInit,
+  downloadEnbSuccess,
+  downloadEnbError,
+
+  fileExtractInit,
+  fileExtractSuccess,
   fileExtractError,
   changeFirefoxVersion,
   changeFFVRequestStatus
@@ -40,10 +42,10 @@ export function installEnbPreset(enbID: number): AsyncAction {
 export function extractArchive(fname: string, destFolder: string): AsyncAction {
   return (dispatch: Dispatch) => {
     const zipTask = new Zip()
-    dispatch(initFileExtract(fname))
+    dispatch(fileExtractInit(fname))
     zipTask.extractFull(fname, destFolder)
     .then(() => {
-      dispatch(fileExtractFinished(fname))
+      dispatch(fileExtractSuccess(fname))
       console.log('All extracted')
     })
     .catch((error) => {
@@ -58,20 +60,21 @@ export function downloadEnbIfNeeded(): AsyncAction {
     const state = getState()
     const game = state.selectedGame
     const dlFolder = state.appFolder + '\\' + state.downloadFolder
+    const enbDownloadUrl = 'http://127.0.0.1:8080/enbseries_falloutnv_v0278.zip'  // faked by local server
 
     let downloader = new DownloadClient(dlFolder)
     // this is extremely risky, it should check if the file exists
     if (state[game].lastUpdated === 0) {
-      dispatch(requestEnbFile(game, true))
+      dispatch(downloadEnbInit(enbDownloadUrl, game))
       console.log('Note: enb download is faked by local server')
       // downloader.getRegularFile(state[game]['enbUrl'])
-      downloader.getEnbArchive('http://127.0.0.1:8080/enbseries_falloutnv_v0278.zip')
-      // downloader.getRegularFile('enbseries_falloutnv_v0278.zip')
+      downloader.getEnbArchive(enbDownloadUrl)
       .then(() => {
-        dispatch(receiveEnbFile(game, false))
+        dispatch(downloadEnbSuccess(enbDownloadUrl, game))
         console.log('download done.')
       })
       .catch((error) => {
+        dispatch(downloadEnbError(enbDownloadUrl, game, error))
         console.log(error)
       })
     }

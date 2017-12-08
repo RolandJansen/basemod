@@ -124,29 +124,30 @@ export function installEnbPreset(presetId: number): Action {
   }
 }
 
-export function downloadEnbInit(enbVersion: string, game: string): Action {
+export function downloadEnbInit(enbUrl: string, game: string): Action {
   return {
     type: at.DOWNLOAD_ENB_INIT,
-    payload: enbVersion,
+    payload: enbUrl,
     meta: game,
     timestamp: Date.now()
   }
 }
 
-export function downloadEnbSuccess(enbVersion: string, game: string): Action {
+export function downloadEnbSuccess(enbUrl: string, game: string): Action {
   return {
     type: at.DOWNLOAD_ENB_SUCCESS,
-    payload: enbVersion,
+    payload: enbUrl,
     meta: game,
     timestamp: Date.now()
   }
 }
 
-export function downloadEnbError(error: Error, game: string): Action {
+export function downloadEnbError(enbUrl: string, game: string, error: Error): Action {
   return {
     type: at.DOWNLOAD_ENB_ERROR,
-    payload: error,
+    payload: enbUrl,
     meta: game,
+    error: error,
     timestamp: Date.now()
   }
 }

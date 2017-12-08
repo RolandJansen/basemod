@@ -4,20 +4,7 @@ import type { Action } from './actionCreators'
 import type { Game } from './initialState'
 import type { Preset } from './presets/enbPresetTypes'
 import { initialState } from './initialState'
-import {
-  CHANGE_NMM_VERSION,
-  CHANGE_APP_FOLDER,
-  CHANGE_DOWNLOAD_FOLDER,
-  CHANGE_FIREFOX_VERSION,
-  IS_FFV_REQUESTING,
-  SELECT_GAME,
-  SELECT_ENB_PRESET,
-  DISABLE_ENB_PRESETS,
-  REQUEST_ENB_FOR_FO3,
-  RECEIVE_ENB_FOR_FO3,
-  REQUEST_ENB_FOR_FNV,
-  RECEIVE_ENB_FOR_FNV
-} from './actionTypes'
+import * as at from './actionTypes'
 
 const gameDummy: Game = {
   name: '',
@@ -40,7 +27,7 @@ const gameDummy: Game = {
  */
 function nmmVersion(state: string = '0.63.14', action: Action) {
   switch (action.type) {
-    case CHANGE_NMM_VERSION:
+    case at.CHANGE_NMM_VERSION:
       return action.payload
     default:
       return state
@@ -49,7 +36,7 @@ function nmmVersion(state: string = '0.63.14', action: Action) {
 
 function appFolder(state: string = '', action: Action) {
   switch (action.type) {
-    case CHANGE_APP_FOLDER:
+    case at.CHANGE_APP_FOLDER:
       return action.payload;
     default:
       return state
@@ -58,7 +45,7 @@ function appFolder(state: string = '', action: Action) {
 
 function downloadFolder(state: string = '', action: Action) {
   switch (action.type) {
-    case CHANGE_DOWNLOAD_FOLDER:
+    case at.CHANGE_DOWNLOAD_FOLDER:
       return action.payload
     default:
       return state
@@ -67,7 +54,7 @@ function downloadFolder(state: string = '', action: Action) {
 
 function firefoxVersion(state: string = '57.0', action: Action) {
   switch (action.type) {
-    case CHANGE_FIREFOX_VERSION:
+    case at.CHANGE_FIREFOX_VERSION:
       return action.payload
     default:
       return state
@@ -76,7 +63,7 @@ function firefoxVersion(state: string = '57.0', action: Action) {
 
 function isFFVRequesting(state: boolean = false, action: Action) {
   switch (action.type) {
-    case IS_FFV_REQUESTING:
+    case at.IS_FFV_REQUESTING:
       return action.payload
     default:
       return state
@@ -92,7 +79,7 @@ function isFFVRequesting(state: boolean = false, action: Action) {
  */
 function selectedGame(state: string = '', action: Action) {
   switch (action.type) {
-    case SELECT_GAME:
+    case at.SELECT_GAME:
       // initialState should probably be replaced with the actual state
       // just to avoid inconsistencies
       if (initialState.hasOwnProperty(action.payload)) {
@@ -113,15 +100,21 @@ function selectedGame(state: string = '', action: Action) {
  */
 function Fallout3(state: Game = gameDummy, action: Action) {
   switch (action.type) {
-    case REQUEST_ENB_FOR_FO3:
-      return Object.assign({}, state, {
-        isRequesting: action.payload
-      })
-    case RECEIVE_ENB_FOR_FO3:
-      return Object.assign({}, state, {
-        isRequesting: action.payload,
-        lastUpdated: action.timestamp
-      })
+    case at.DOWNLOAD_ENB_INIT:
+      if (action.game === 'Fallout3') {
+        return Object.assign({}, state, {
+          isRequesting: action.payload
+        })
+      }
+      break
+    case at.DOWNLOAD_ENB_SUCCESS:
+      if (action.game === 'Fallout3') {
+        return Object.assign({}, state, {
+          isRequesting: action.payload,
+          lastUpdated: action.timestamp
+        })
+      }
+      break
     default:
       return genericGame(state, action)
   }
@@ -135,15 +128,21 @@ function Fallout3(state: Game = gameDummy, action: Action) {
  */
 function FalloutNV(state: Game= gameDummy, action: Action) {
   switch (action.type) {
-    case REQUEST_ENB_FOR_FNV:
-      return Object.assign({}, state, {
-        isRequesting: action.payload
-      })
-    case RECEIVE_ENB_FOR_FNV:
-      return Object.assign({}, state, {
-        isRequesting: action.payload,
-        lastUpdated: action.timestamp
-      })
+    case at.DOWNLOAD_ENB_INIT:
+      if (action.game === 'FalloutNV') {
+        return Object.assign({}, state, {
+          isRequesting: action.payload
+        })
+      }
+    break
+    case at.DOWNLOAD_ENB_SUCCESS:
+      if (action.game === 'FalloutNV') {
+        return Object.assign({}, state, {
+          isRequesting: action.payload,
+          lastUpdated: action.timestamp
+        })
+      }
+      break
     default:
       return genericGame(state, action)
   }
@@ -158,13 +157,12 @@ function FalloutNV(state: Game= gameDummy, action: Action) {
 function genericGame(state: Game = gameDummy, action: Action) {
   let enbs = []
   switch (action.type) {
-    case SELECT_ENB_PRESET:
+    case at.SELECT_ENB_PRESET:
       enbs = EnbPresets(state.enbPresets, action)
       return Object.assign({}, state, { enbPresets: enbs })
-    case DISABLE_ENB_PRESETS:
+    case at.DISABLE_ENB_PRESETS:
       enbs = EnbPresets(state.enbPresets, action)
       return Object.assign({}, state, { enbPresets: enbs })
-
     default:
       return state
   }
@@ -173,7 +171,7 @@ function genericGame(state: Game = gameDummy, action: Action) {
 // subtree functions
 function EnbPresets(state: Array<Preset> = [], action: Action) {
   switch (action.type) {
-    case SELECT_ENB_PRESET:
+    case at.SELECT_ENB_PRESET:
       return state.map(preset => {
         if (preset.id === action.payload) {
           let newPreset = JSON.parse(JSON.stringify(preset))
@@ -182,20 +180,12 @@ function EnbPresets(state: Array<Preset> = [], action: Action) {
         }
         return preset
       })
-    case DISABLE_ENB_PRESETS:
+    case at.DISABLE_ENB_PRESETS:
       return state.map(preset => {
         let newPreset = JSON.parse(JSON.stringify(preset))
         newPreset.isSelected = false
         return newPreset
       })
-    // case REQUEST_ENB_FOR_FO3NV:
-    //   return state.map(preset => {
-    //     if (preset.id = idNum) {
-    //       let newPreset = JSON.parse(JSON.stringify(preset))
-    //       newPreset.isRequesting = true
-    //     }
-    //   })
-
     default:
       return state
   }
