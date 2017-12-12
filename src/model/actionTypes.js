@@ -4,11 +4,13 @@
 export const CHANGE_NMM_VERSION: string = 'CHANGE_NMM_VERSION'
 export const CHANGE_APP_FOLDER: string = 'CHANGE_APP_FOLDER'
 export const CHANGE_DOWNLOAD_FOLDER: string = 'CHANGE_DOWNLOAD_FOLDER'
-export const CHANGE_FIREFOX_VERSION: string = 'CHANGE_FIREFOX_VERSION'
-export const IS_FFV_REQUESTING: string = 'IS_FFV_REQUESTING'
+export const CHANGE_FIREFOX_VERSION: string = 'CHANGE_FIREFOX_VERSION'  //not testet, tobe removed?
+export const IS_FFV_REQUESTING: string = 'IS_FFV_REQUESTING'  //not tested, tobe removed?
 export const SELECT_GAME: string = 'SELECT_GAME'
 export const SELECT_ENB_PRESET: string = 'SELECT_ENB_PRESET'
-export const DISABLE_ENB_PRESETS: string = 'DISABLE_ENB_PRESETS'
+export const DESELECT_ENB_PRESETS: string = 'DESELECT_ENB_PRESETS'
+
+// async middleware entry points
 export const INSTALL_ENB_PRESET: string = 'INSTALL_ENB_PRESET'
 
 // action types for async dispatching (middleware)

@@ -1,7 +1,7 @@
 /* @flow */
 // import type State from '../../model/initialState'
 import isValidPath from 'is-valid-path'
-const electron = window.require('electron')
+const electron = window.require('electron')   // fails in test
 const fs = electron.remote.require('fs')
 // const os = electron.remote.require('os')
 const request = electron.remote.require('request-promise-native')

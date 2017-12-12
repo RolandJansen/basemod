@@ -7,7 +7,7 @@ import {
   addEnbPreset
 } from './actionCreators'
 
-describe('changeNmmVersion', () => {
+xdescribe('changeNmmVersion', () => {
   const validVersion1 = '1.23.42'
   const validVersion2 = '1.23'
   const validVersion3 = '1'
@@ -52,7 +52,7 @@ describe('changeNmmVersion', () => {
   })
 })
 
-describe('addEnbPreset', () => {
+xdescribe('addEnbPreset', () => {
   const preset = { name: 'superEnb', id: 123 }
   const action = { type: ADD_ENB_PRESET, payload: preset }
 

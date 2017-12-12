@@ -5,7 +5,7 @@ import './EnbSelector.css';
 /**
  *
  */
-class EnbChooser extends Component {
+class EnbSelector extends Component {
 
   constructor(props) {
     super(props)
@@ -19,11 +19,19 @@ class EnbChooser extends Component {
   }
 
   handleChangeSelected(event) {
+    let gameName: string
+    if (this.props.enbs) {
+      this.props.enbs.forEach(enb => {
+        if (enb.id === event.target.value) {
+          gameName = enb.gameName
+        }
+      })
+    }
     this.setState({
       selectedEnb: event.target.value,
       buttonDisabled: false
     })
-    this.props.onEnbSelect(event.target.value)
+    this.props.onEnbSelect(event.target.value, gameName)
   }
 
   handleEnbInstall() {
@@ -32,11 +40,13 @@ class EnbChooser extends Component {
 
   getSelectedEnb(enbs) {
     let selected = 0
-    enbs.forEach(enb => {
-      if (enb.isSelected) {
-        selected = enb.id
-      }
-    })
+    if (enbs) {
+      enbs.forEach(enb => {
+        if (enb.isSelected) {
+          selected = enb.id
+        }
+      })
+    }
     return selected
   }
 
@@ -69,4 +79,4 @@ class EnbChooser extends Component {
   }
 }
 
-export default EnbChooser;
+export default EnbSelector;

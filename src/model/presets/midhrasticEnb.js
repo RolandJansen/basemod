@@ -10,8 +10,8 @@ import type { Preset } from './enbPresetTypes'
 let midhrasticEnb: Preset = {
     isSelected: false,
     isInstalled: false,
-    isRequesting: false,
-    lastUpdate: 0,
+    isFetching: false,
+    lastUpdated: 0,
     name: 'Midhrastic ENB',
     id: 18107,
     fileId: 85290,

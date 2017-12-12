@@ -16,8 +16,8 @@ type timestamp = number
    // async props
    isSelected: boolean,
    isInstalled: boolean,
-   isRequesting: boolean,
-   lastUpdate: timestamp,
+   isFetching: boolean,
+   lastUpdated: timestamp,
    // static props
    name: string,
    id: number,

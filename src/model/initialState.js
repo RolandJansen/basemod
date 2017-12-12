@@ -2,19 +2,38 @@
 import type { Preset } from './presets/enbPresetTypes'
 import midhrasticEnb from './presets/midhrasticEnb'
 import enhancedShaders from './presets/enhancedShaders'
+import enhancedShadersNeutral from './presets/enhancedShaders2'
 
 /**
  * All data and objects that form the initial state of the app go here.
  */
+export type GameName = 'Fallout3' |
+  'FalloutNV' |
+  'Fallout4' |
+  'Skyrim' |
+  'SkyrimSE' |
+  'Morrowind' |
+  'Oblivion'
+
 export type Game = {
   name: string,
   id: number,
   enbVersion: number,
   enbUrl: string,
   enbFile: string,
-  isRequesting: boolean,
+  isFetching: boolean,
   lastUpdated: number,
   enbPresets: Array<Preset>
+}
+
+type ExtractedFile = {
+  fullPath: string,
+  timestamp: number
+}
+
+export type SevenZip = {
+  isExtracting: boolean,
+  extractedFiles: Array<ExtractedFile>
 }
 
 export type State = {
@@ -26,11 +45,17 @@ export type State = {
   selectedGame: string,
   Fallout3: Game,
   FalloutNV: Game,
+  sevenZip: SevenZip
   // Fallout4: Game,
   // Skyrim: Game,
   // SkyrimSE: Game,
   // Morrowind: Game,
   // Oblivion: Game
+}
+
+let sevenZip: SevenZip = {
+  isExtracting: false,
+  extractedFiles: []
 }
 
 let Fallout3: Game = {
@@ -39,7 +64,7 @@ let Fallout3: Game = {
   enbVersion: 322,
   enbUrl: 'http://enbdev.com/enbseries_falloutnv_v0322.zip',
   enbFile: 'enbseries_falloutnv_v0322.zip',
-  isRequesting: false,
+  isFetching: false,
   lastUpdated: 0,
   enbPresets: [ midhrasticEnb ]
 }
@@ -50,9 +75,9 @@ let FalloutNV: Game = {
   enbVersion: 322,
   enbUrl: 'http://enbdev.com/enbseries_falloutnv_v0322.zip',
   enbFile: 'enbseries_falloutnv_v0322.zip',
-  isRequesting: false,
+  isFetching: false,
   lastUpdated: 0,
-  enbPresets: [ enhancedShaders ]
+  enbPresets: [ enhancedShaders, enhancedShadersNeutral ]
 }
 
 // let Fallout4: Game = {
@@ -98,5 +123,6 @@ export const initialState: State = {
   // Skyrim: Skyrim,
   // SkyrimSE: SkyrimSE,
   // Morrowind: Morrowind,
-  // Oblivion: Oblivion
+  // Oblivion: Oblivion,
+  sevenZip: sevenZip
 }

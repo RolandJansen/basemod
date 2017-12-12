@@ -49,7 +49,7 @@ export function extractArchive(fname: string, destFolder: string): AsyncAction {
       console.log('All extracted')
     })
     .catch((error) => {
-      dispatch(fileExtractError(error))
+      dispatch(fileExtractError(fname, error))
       console.log('An error occured: ' + error)
     })
   }
@@ -65,16 +65,16 @@ export function downloadEnbIfNeeded(): AsyncAction {
     let downloader = new DownloadClient(dlFolder)
     // this is extremely risky, it should check if the file exists
     if (state[game].lastUpdated === 0) {
-      dispatch(downloadEnbInit(enbDownloadUrl, game))
+      dispatch(downloadEnbInit(game))
       console.log('Note: enb download is faked by local server')
       // downloader.getRegularFile(state[game]['enbUrl'])
       downloader.getEnbArchive(enbDownloadUrl)
       .then(() => {
-        dispatch(downloadEnbSuccess(enbDownloadUrl, game))
+        dispatch(downloadEnbSuccess(game))
         console.log('download done.')
       })
       .catch((error) => {
-        dispatch(downloadEnbError(enbDownloadUrl, game, error))
+        dispatch(downloadEnbError(game, error))
         console.log(error)
       })
     }

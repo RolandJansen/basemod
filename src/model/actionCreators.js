@@ -1,6 +1,7 @@
 /* @flow */
 import isValidPath from 'is-valid-path'
 import * as at from './actionTypes'
+import type { GameName } from './initialState'
 
 /**
  * This file exports functions that creates actions.
@@ -23,6 +24,15 @@ import * as at from './actionTypes'
    error?: Error,
    timestamp?: number
  }
+
+// function makeActionCreator(type: string, ...argNames: Array<string>) {
+//   return function(): Action {
+//     let action = { type }
+//
+//     return action
+//   }
+// }
+
 
 /**
  * Tests if the version is valid and returns an action object
@@ -95,24 +105,25 @@ export function changeFFVRequestStatus(status: boolean): Action {
   }
 }
 
-export function selectGame(storeKey: string): Action {
+export function selectGame(gameName: GameName): Action {
   return {
     type: at.SELECT_GAME,
-    payload: storeKey
+    payload: gameName
   }
 }
 
-export function selectEnbPreset(presetId: number): Action {
+export function selectEnbPreset(presetId: number, gameName: GameName): Action {
   return {
     type: at.SELECT_ENB_PRESET,
-    payload: presetId
+    payload: presetId,
+    meta: gameName
   }
 }
 
-export function disableEnbPresets(presetId: number): Action {
+export function deselectEnbPresets(gameName: GameName): Action {
   return {
-    type: at.DISABLE_ENB_PRESETS,
-    payload: presetId
+    type: at.DESELECT_ENB_PRESETS,
+    meta: gameName
   }
 }
 
@@ -124,140 +135,137 @@ export function installEnbPreset(presetId: number): Action {
   }
 }
 
-export function downloadEnbInit(enbUrl: string, game: string): Action {
+export function downloadEnbInit(gameName: GameName): Action {
   return {
     type: at.DOWNLOAD_ENB_INIT,
-    payload: enbUrl,
-    meta: game,
+    meta: gameName,
     timestamp: Date.now()
   }
 }
 
-export function downloadEnbSuccess(enbUrl: string, game: string): Action {
+export function downloadEnbSuccess(gameName: GameName): Action {
   return {
     type: at.DOWNLOAD_ENB_SUCCESS,
-    payload: enbUrl,
-    meta: game,
+    meta: gameName,
     timestamp: Date.now()
   }
 }
 
-export function downloadEnbError(enbUrl: string, game: string, error: Error): Action {
+export function downloadEnbError(gameName: GameName, error: Error): Action {
   return {
     type: at.DOWNLOAD_ENB_ERROR,
-    payload: enbUrl,
-    meta: game,
+    meta: gameName,
     error: error,
     timestamp: Date.now()
   }
 }
 
-export function fetchModInfosInit(modID: number, game: string): Action {
+export function fetchModInfosInit(modID: number, gameName: GameName): Action {
   return {
     type: at.FETCH_MOD_INFOS_INIT,
     payload: modID,
-    meta: game,
+    meta: gameName,
     timestamp: Date.now()
   }
 }
 
-export function fetchModInfosSuccess(modID: number, game: string): Action {
+export function fetchModInfosSuccess(modID: number, gameName: GameName): Action {
   return {
     type: at.FETCH_MOD_INFOS_SUCCESS,
     payload: modID,
-    meta: game,
+    meta: gameName,
     timestamp: Date.now()
   }
 }
 
-export function fetchModInfosError(modID: number, game: string): Action {
+export function fetchModInfosError(modID: number, gameName: GameName): Action {
   return {
     type: at.FETCH_MOD_INFOS_ERROR,
     payload: modID,
-    meta: game,
+    meta: gameName,
     timestamp: Date.now()
   }
 }
 
-export function fetchModFileInfosInit(modID: number, game: string): Action {
+export function fetchModFileInfosInit(modID: number, gameName: GameName): Action {
   return {
     type: at.FETCH_MOD_FILE_INFOS_INIT,
     payload: modID,
-    meta: game,
+    meta: gameName,
     timestamp: Date.now()
   }
 }
 
-export function fetchModFileInfosSuccess(modID: number, game: string): Action {
+export function fetchModFileInfosSuccess(modID: number, gameName: GameName): Action {
   return {
     type: at.FETCH_MOD_FILE_INFOS_SUCCESS,
     payload: modID,
-    meta: game,
+    meta: gameName,
     timestamp: Date.now()
   }
 }
 
-export function fetchModFileInfosError(modID: number, game: string, error: Error): Action {
+export function fetchModFileInfosError(modID: number, gameName: GameName, error: Error): Action {
   return {
     type: at.FETCH_MOD_FILE_INFOS_ERROR,
     payload: modID,
-    meta: game,
+    meta: gameName,
     error: error,
     timestamp: Date.now()
   }
 }
 
-export function fetchModFileDurlInit(modID: number, game: string): Action {
+export function fetchModFileDurlInit(modID: number, gameName: GameName): Action {
   return {
     type: at.FETCH_MOD_FILE_DLURL_INIT,
     payload: modID,
-    meta: game,
+    meta: gameName,
     timestamp: Date.now()
   }
 }
 
-export function fetchModFileDurlSuccess(modID: number, game: string): Action {
+export function fetchModFileDurlSuccess(modID: number, gameName: GameName): Action {
   return {
     type: at.FETCH_MOD_FILE_DLURL_SUCCESS,
     payload: modID,
-    meta: game,
+    meta: gameName,
     timestamp: Date.now()
   }
 }
 
-export function fetchModFileDurlError(modID: number, game: string, error: Error): Action {
+export function fetchModFileDurlError(modID: number, gameName: GameName, error: Error): Action {
   return {
     type: at.FETCH_MOD_FILE_DLURL_ERROR,
     payload: modID,
-    meta: game,
+    meta: gameName,
     error: error,
     timestamp: Date.now()
   }
 }
 
-export function downloadModFileInit(modID: number, game: string): Action {
+export function downloadModFileInit(modID: number, gameName: GameName): Action {
   return {
     type: at.DOWNLOAD_MOD_FILE_INIT,
     payload: modID,
-    meta: game,
+    meta: gameName,
     timestamp: Date.now()
   }
 }
 
-export function downloadModFileSuccess(modID: number, game: string): Action {
+export function downloadModFileSuccess(modID: number, gameName: GameName): Action {
   return {
     type: at.DOWNLOAD_MOD_FILE_SUCCESS,
     payload: modID,
-    meta: game,
+    meta: gameName,
     timestamp: Date.now()
   }
 }
 
-export function downloadModFileError(modID: number, game: string, error: Error): Action {
+export function downloadModFileError(modID: number, gameName: GameName, error: Error): Action {
   return {
     type: at.DOWNLOAD_MOD_FILE_ERROR,
     payload: modID,
-    meta: game,
+    meta: gameName,
     error: error,
     timestamp: Date.now()
   }
@@ -273,13 +281,16 @@ export function fileExtractInit(fname: string): Action {
 export function fileExtractSuccess(fname: string): Action {
   return {
     type: at.FILE_EXTRACT_SUCCESS,
-    payload: fname
+    payload: fname,
+    timestamp: Date.now()
   }
 }
 
-export function fileExtractError(error: Error): Action {
+export function fileExtractError(fname: string, error: Error): Action {
   return {
     type: at.FILE_EXTRACT_ERROR,
-    payload: error
+    payload: fname,
+    error: error,
+    timestamp: Date.now()
   }
 }

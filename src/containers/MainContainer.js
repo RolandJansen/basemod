@@ -21,8 +21,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onEnbSelect: enbID => {
-      dispatch(selectEnbPreset(enbID))
+    onEnbSelect: (enbID, gameName) => {
+      dispatch(selectEnbPreset(enbID, gameName))
     },
     onEnbInstall: enbID => {
       dispatch(installEnbPreset(Number.parseInt(enbID, 10)))

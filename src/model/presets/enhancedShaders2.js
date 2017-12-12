@@ -1,5 +1,8 @@
 import type { Preset } from './enbPresetTypes'
 
+// THIS IS JUST FOR TESTING IN EARLY DEV.
+// DIFFERENT FLAVORS OF THE SAME ENB SHOULD BE HANDLED IN 'advanced options' or so.
+
 /**
  * This is a configuration file for an ENB preset.
  * The orgValue fields are not necessarily the same
@@ -7,14 +10,14 @@ import type { Preset } from './enbPresetTypes'
  * they get overwritten with the actual values from
  * the ini files.
  */
-let enhancedShaders: Preset = {
+let enhancedShadersNeutral: Preset = {
     isSelected: false,
     isInstalled: false,
     isFetching: false,
     lastUpdated: 0,
-    name: 'Enhanced Shaders - ENB',
-    id: 49882,
-    fileId: 1000017733,
+    name: 'Enhanced Shaders - Neutral Edition',
+    id: 2342,
+    fileId: 0,
     gameId: 130,
     gameName: 'FalloutNV',
     enbMinVersion: '0.278',
@@ -67,4 +70,4 @@ let enhancedShaders: Preset = {
     ]
   }
 
-export default enhancedShaders
+export default enhancedShadersNeutral
