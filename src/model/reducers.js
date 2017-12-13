@@ -111,6 +111,7 @@ function sevenZip(state: SevenZip = sevenZipDummy, action: Action) {
       return Object.assign({}, state, { isExtracting: true })
     case at.FILE_EXTRACT_SUCCESS:
       let newExtFiles = state.extractedFiles.slice()
+      // $FlowFixMe
       newExtFiles.push({
         fullPath: action.payload,
         timestamp: action.timestamp

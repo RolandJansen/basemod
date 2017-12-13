@@ -80,7 +80,7 @@ class IniParser {
    * @param  {string} key     Variable or keyword
    * @return {number}         data from the specified key
    */
-  getNumberValue(section: string, key: string): number | Object {
+  getNumberValue(section: string, key: string): number | Error {
     if (this.iniData[section] && this.iniData[section][key]) {
       const val = this.iniData[section][key]
       if (!isNaN(val)) {
@@ -113,7 +113,7 @@ class IniParser {
    * @param  {number} val     New value
    * @return {number}         The old value that has been replaced
    */
-  changeNumberValue(section: string, key: string, val: number): number | Object {
+  changeNumberValue(section: string, key: string, val: number): number | Error {
     if (this.iniData[section] && this.iniData[section][key]) {
       if (!isNaN(this.iniData[section][key])) {
         this.iniData[section][key] = val.toString()
@@ -131,7 +131,7 @@ class IniParser {
    * @param  {string} val     New value
    * @return {string}         The old value that has been replaced
    */
-  changeStringValue(section: string, key: string, val: string): string | Object {
+  changeStringValue(section: string, key: string, val: string): string | Error {
     if (this.iniData[section] && this.iniData[section][key]) {
       if (isNaN(this.iniData[section][key])) {
         this.iniData[section][key] = val

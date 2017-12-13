@@ -294,3 +294,56 @@ export function fileExtractError(fname: string, error: Error): Action {
     timestamp: Date.now()
   }
 }
+
+export function iniFileLoadInit(fullPath: string): Action {
+  if (isValidPath(fullPath)) {
+    return {
+      type: at.INI_FILE_LOAD_INIT,
+      payload: fullPath
+    }
+  }
+  return iniFileLoadError(fullPath, new Error('Invalid file path'))
+}
+
+export function iniFileLoadSuccess(fullPath: string): Action {
+  return {
+    type: at.INI_FILE_LOAD_SUCCESS,
+    payload: fullPath,
+    timestamp: Date.now()
+  }
+}
+
+export function iniFileLoadError(fullPath: string, error: Error): Action {
+  return {
+    type: at.INI_FILE_LOAD_ERROR,
+    payload: fullPath,
+    error: error,
+    timestamp: Date.now()
+  }
+}
+
+export function iniFileSaveInit(fullPath: string): Action {
+  if (isValidPath(fullPath)) {
+    return {
+      type: at.INI_FILE_SAVE_INIT,
+      payload: fullPath
+    }
+  }
+  return iniFileSaveError(fullPath, new Error('Invalid file path'))
+}
+
+export function iniFileSaveSuccess(fullPath: string): Action {
+  return {
+    type: at.INI_FILE_SAVE_SUCCESS,
+    payload: fullPath
+  }
+}
+
+export function iniFileSaveError(fullPath: string, error: Error): Action {
+  return {
+    type: at.INI_FILE_SAVE_ERROR,
+    payload: fullPath,
+    error: error,
+    timestamp: Date.now()
+  }
+}
