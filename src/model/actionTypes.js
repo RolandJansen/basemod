@@ -9,6 +9,8 @@ export const IS_FFV_REQUESTING: string = 'IS_FFV_REQUESTING'  //not tested, tobe
 export const SELECT_GAME: string = 'SELECT_GAME'
 export const SELECT_ENB_PRESET: string = 'SELECT_ENB_PRESET'
 export const DESELECT_ENB_PRESETS: string = 'DESELECT_ENB_PRESETS'
+export const SET_INI_FILE_PATH: string = 'SET_INI_FILE_PATH'
+export const SET_PREFS_FILE_PATH: string = 'SET_PREFS_FILE_PATH'
 
 // async middleware entry points
 export const INSTALL_ENB_PRESET: string = 'INSTALL_ENB_PRESET'

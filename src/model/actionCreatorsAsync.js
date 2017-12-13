@@ -55,6 +55,12 @@ export function extractArchive(fname: string, destFolder: string): AsyncAction {
   }
 }
 
+export function editIni(fPath: string): AsyncAction {
+  return (dispatch: Dispatch) => {
+
+  }
+}
+
 export function downloadEnbIfNeeded(): AsyncAction {
   return (dispatch: Dispatch, getState: GetState) => {
     const state = getState()

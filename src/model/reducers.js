@@ -192,6 +192,20 @@ function genericGame(state: Game = gameDummy, action: Action) {
       return Object.assign({}, state, {
         isFetching: false
       })
+    case at.SET_INI_FILE_PATH:
+      if (!(action.error instanceof Error)) {
+        return Object.assign({}, state, {
+          iniFilePath: action.payload
+        })
+      }
+      return state
+    case at.SET_PREFS_FILE_PATH:
+      if (!(action.error instanceof Error)) {
+        return Object.assign({}, state, {
+          prefsFilePath: action.payload
+        })
+      }
+      return state
     default:
       return state
   }

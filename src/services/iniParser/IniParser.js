@@ -1,6 +1,5 @@
 /* @flow */
 import fs from 'fs'
-import os from 'os'
 import ini from 'ini'
 
 /**
@@ -14,20 +13,10 @@ class IniParser {
   iniData: Object
   iniDataBkup: Object
 
-  constructor(gameName: string, iniFileName: string) {
-    this.iniPath = this.setupMyGamesPath(gameName, iniFileName)
+  constructor(iniFullPath: string) {
+    this.iniPath = iniFullPath
     this.iniData = this.loadIniFile(this.iniPath)
     this.iniDataBkup = JSON.parse(JSON.stringify(this.iniData))  // make a (deep) copy by value
-  }
-
-  /**
-   * Assembles the full path of the ini file
-   * @param  {string} gameName    The game this ini belongs to
-   * @param  {string} iniFileName Name of ini file
-   * @return {string}             full path of the ini file
-   */
-  setupMyGamesPath(gameName: string, iniFileName: string): string {
-    return os.homedir() + '\\Documents\\My Games\\' + gameName + '\\' + iniFileName
   }
 
   /**

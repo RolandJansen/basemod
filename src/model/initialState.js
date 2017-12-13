@@ -23,6 +23,8 @@ export type Game = {
   enbFile: string,
   isFetching: boolean,
   lastUpdated: number,
+  iniFilePath: string,
+  prefsFilePath: string,
   enbPresets: Array<Preset>
 }
 
@@ -66,6 +68,8 @@ let Fallout3: Game = {
   enbFile: 'enbseries_falloutnv_v0322.zip',
   isFetching: false,
   lastUpdated: 0,
+  iniFilePath: '',
+  prefsFilePath: '',
   enbPresets: [ midhrasticEnb ]
 }
 
@@ -77,6 +81,8 @@ let FalloutNV: Game = {
   enbFile: 'enbseries_falloutnv_v0322.zip',
   isFetching: false,
   lastUpdated: 0,
+  iniFilePath: '',
+  prefsFilePath: '',
   enbPresets: [ enhancedShaders, enhancedShadersNeutral ]
 }
 

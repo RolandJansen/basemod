@@ -127,6 +127,30 @@ export function deselectEnbPresets(gameName: GameName): Action {
   }
 }
 
+export function setIniFilePath(gameName: GameName, fullPath: string): Action {
+  let action: Action = {
+    type: at.SET_INI_FILE_PATH,
+    payload: fullPath,
+    meta: gameName
+  }
+  if (!isValidPath(fullPath)) {
+    action.error = new Error('Not a valid filesystem path')
+  }
+  return action
+}
+
+export function setPrefsFilePath(gameName: GameName, fullPath: string): Action {
+  let action: Action = {
+    type: at.SET_PREFS_FILE_PATH,
+    payload: fullPath,
+    meta: gameName
+  }
+  if (!isValidPath(fullPath)) {
+    action.error = new Error('Not a valid filesystem path')
+  }
+  return action
+}
+
 // entry point for an async action chain
 export function installEnbPreset(presetId: number): Action {
   return {
@@ -295,25 +319,27 @@ export function fileExtractError(fname: string, error: Error): Action {
   }
 }
 
-export function iniFileLoadInit(fullPath: string): Action {
+export function iniFileLoadInit(fullPath: string, gameName: string): Action {
   if (isValidPath(fullPath)) {
     return {
       type: at.INI_FILE_LOAD_INIT,
-      payload: fullPath
+      payload: fullPath,
+      meta: gameName
     }
   }
   return iniFileLoadError(fullPath, new Error('Invalid file path'))
 }
 
-export function iniFileLoadSuccess(fullPath: string): Action {
+export function iniFileLoadSuccess(fullPath: string, gameName: string): Action {
   return {
     type: at.INI_FILE_LOAD_SUCCESS,
     payload: fullPath,
+    meta: gameName,
     timestamp: Date.now()
   }
 }
 
-export function iniFileLoadError(fullPath: string, error: Error): Action {
+export function iniFileLoadError(fullPath: string, gameName: string, error: Error): Action {
   return {
     type: at.INI_FILE_LOAD_ERROR,
     payload: fullPath,
@@ -322,7 +348,7 @@ export function iniFileLoadError(fullPath: string, error: Error): Action {
   }
 }
 
-export function iniFileSaveInit(fullPath: string): Action {
+export function iniFileSaveInit(fullPath: string, gameName: string): Action {
   if (isValidPath(fullPath)) {
     return {
       type: at.INI_FILE_SAVE_INIT,
@@ -332,14 +358,14 @@ export function iniFileSaveInit(fullPath: string): Action {
   return iniFileSaveError(fullPath, new Error('Invalid file path'))
 }
 
-export function iniFileSaveSuccess(fullPath: string): Action {
+export function iniFileSaveSuccess(fullPath: string, gameName: string): Action {
   return {
     type: at.INI_FILE_SAVE_SUCCESS,
     payload: fullPath
   }
 }
 
-export function iniFileSaveError(fullPath: string, error: Error): Action {
+export function iniFileSaveError(fullPath: string, gameName: string, error: Error): Action {
   return {
     type: at.INI_FILE_SAVE_ERROR,
     payload: fullPath,

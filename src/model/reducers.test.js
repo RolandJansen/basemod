@@ -17,14 +17,16 @@ describe('A synchronous action', () => {
   let store
   let oldState
   let newState
+  let gameName
 
   beforeEach(() => {
+    gameName = 'FalloutNV'
     const state = JSON.parse(JSON.stringify(initialState))  //keep initialState clean
     store = createStore(reducer, state)
   })
 
   afterEach(() => {
-    store = oldState = newState = null
+    store = oldState = newState = gameName = null
   })
 
   describe(at.CHANGE_APP_FOLDER, () => {
@@ -68,12 +70,11 @@ describe('A synchronous action', () => {
   describe(at.SELECT_GAME, () => {
 
     it('changes the selected game when given a valid name', () => {
-      const game = 'FalloutNV'
       oldState = store.getState()['selectedGame']
-      store.dispatch(ac.selectGame(game))
+      store.dispatch(ac.selectGame(gameName))
       newState = store.getState()['selectedGame']
       expect(oldState).toBe('')
-      expect(newState).toBe(game)
+      expect(newState).toBe(gameName)
     })
 
     it('doesn\'t change the selected game when given an invalid name', () => {
@@ -85,7 +86,6 @@ describe('A synchronous action', () => {
   })
 
   describe(at.SELECT_ENB_PRESET, () => {
-    const gameName: string = 'FalloutNV'
     const presetId: number = 49882
     let presets: Array<Preset>
     let presetPos: number
@@ -121,7 +121,7 @@ describe('A synchronous action', () => {
     it('deselects all other ENB presets', () => {
       // make another preset active
       let otherPreset: number
-      const epLength = store.getState()['FalloutNV']['enbPresets'].length
+      const epLength = store.getState()[gameName]['enbPresets'].length
       if (presetPos < epLength - 1) {
         otherPreset = presetPos + 1
       } else {
@@ -139,21 +139,71 @@ describe('A synchronous action', () => {
   describe(at.DESELECT_ENB_PRESETS, () => {
 
     beforeEach(() => {
-      store.getState()['FalloutNV']['enbPresets'][0].isSelected = true
-      oldState = store.getState()['FalloutNV']['enbPresets'][0].isSelected
+      store.getState()[gameName]['enbPresets'][0].isSelected = true
+      oldState = store.getState()[gameName]['enbPresets'][0].isSelected
     })
 
     it('deselects all ENB presets', () => {
-      store.dispatch(ac.deselectEnbPresets('FalloutNV'))
-      newState = store.getState()['FalloutNV']['enbPresets'][0].isSelected
+      store.dispatch(ac.deselectEnbPresets(gameName))
+      newState = store.getState()[gameName]['enbPresets'][0].isSelected
       expect(oldState).toBeTruthy()
       expect(newState).toBeFalsy()
     })
 
     it('does nothing when given an invalid game name', () => {
       store.dispatch(ac.deselectEnbPresets('noValidGame'))
-      newState = store.getState()['FalloutNV']['enbPresets'][0].isSelected
+      newState = store.getState()[gameName]['enbPresets'][0].isSelected
       expect(newState).toBeTruthy()
+    })
+  })
+
+  describe(at.SET_INI_FILE_PATH, () => {
+
+    it('sets the path to an ini file for a game', () => {
+      const fpath = 'D:\\path\\to\\ini\\Fallout.ini'
+      oldState = store.getState()[gameName]['iniFilePath']
+      store.dispatch(ac.setIniFilePath(gameName, fpath))
+      newState = store.getState()[gameName]['iniFilePath']
+      expect(oldState).toEqual('')
+      expect(newState).toEqual(fpath)
+    })
+
+    it('puts an error into the action if path is not valid', () => {
+      const fpath = 'not valid *$%&/'
+      const action = ac.setIniFilePath(gameName, fpath)
+      expect(action.error instanceof Error).toBeTruthy()
+    })
+
+    it('doesn\'t change anything if an error is attached', () => {
+      const fpath = 'not valid *$%&/'
+      store.dispatch(ac.setIniFilePath(gameName, fpath))
+      newState = store.getState()[gameName]['iniFilePath']
+      expect(newState).toEqual('')
+    })
+  })
+
+  describe(at.SET_PREFS_FILE_PATH, () => {
+
+    it('sets the path to an prefs file for a game', () => {
+      const fpath = 'D:\\path\\to\\prefs\\FalloutPrefs.ini'
+      oldState = store.getState()[gameName]['prefsFilePath']
+      store.dispatch(ac.setPrefsFilePath(gameName, fpath))
+      newState = store.getState()[gameName]['prefsFilePath']
+      expect(oldState).toEqual('')
+      expect(newState).toEqual(fpath)
+    })
+
+    it('puts an error into the action if path is not valid', () => {
+      const fpath = 'not valid *$%&/'
+      const action = ac.setPrefsFilePath(gameName, fpath)
+      expect(action.error instanceof Error).toBeTruthy()
+    })
+
+    it('doesn\'t change anything if an error is attached', () => {
+      const fpath = 'not valid *$%&/'
+      store.dispatch(ac.setPrefsFilePath(gameName, fpath))
+      newState = store.getState()[gameName]['prefsFilePath']
+      expect(newState).toEqual('')
     })
   })
 
@@ -161,7 +211,6 @@ describe('A synchronous action', () => {
    * actions below are triggered by async actions in the middleware
    */
   describe('represets middleware state', () => {
-    const gameName = 'FalloutNV'
     const error = new Error('A very serious problem occurred!')
 
     describe(at.DOWNLOAD_ENB_INIT, () => {
@@ -421,6 +470,23 @@ describe('A synchronous action', () => {
     })
 
     describe(at.FILE_EXTRACT_ERROR, () => {})
+
+    // These actions should go straight into the logging-middleware
+    // that doesn't exist yet, so nothing to test here at the moment.
+    describe(at.INI_FILE_LOAD_INIT, () => {})
+
+    describe(at.INI_FILE_LOAD_SUCCESS, () => {})
+
+    describe(at.INI_FILE_LOAD_ERROR, () => {})
+
+    describe(at.INI_FILE_SAVE_INIT, () => {})
+
+    describe(at.INI_FILE_SAVE_ERROR, () => {})
+
+    describe(at.INI_FILE_SAVE_SUCCESS, () => {})
+
+    describe(at.INI_FILE_SAVE_ERROR, () => {})
+
   })
 
 })
