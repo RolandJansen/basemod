@@ -35,7 +35,7 @@
   "devDependencies": {
     "electron": "^1.7.9",
     "electron-builder": "^19.43.4",
-    "foreman": "^2.0.0",
+    "foreman": "^3.0.1",
     "mock-fs": "^4.4.2"
   }
 }
