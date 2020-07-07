@@ -33,7 +33,7 @@
     "flow": "flow"
   },
   "devDependencies": {
-    "electron": "^1.7.9",
+    "electron": "^9.1.0",
     "electron-builder": "^19.43.4",
     "foreman": "^3.0.1",
     "mock-fs": "^4.4.2"
